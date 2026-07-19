@@ -13,6 +13,12 @@ web/out/
 web/.env
 web/.env.local
 
+# Playwright
+web/test-results/
+web/playwright-report/
+web/blob-report/
+web/.playwright/
+
 # Subagent scratch (progress ledger, briefs)
 .superpowers/
 
