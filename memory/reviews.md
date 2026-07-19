@@ -6,10 +6,9 @@
 
 **Positivos:** Zod nos limites; env lazy resiliente (site funciona sem Supabase, form falha com msg amigável); estrutura limpa (1 componente/ficheiro); testes 10/10; sem secrets; noopener; aria-label no FAB e title no mapa.
 
-**A corrigir (Importante, todos rápidos):**
-1. Contacto.tsx: `<input>` sem `<label>`/id/aria — acessibilidade (WCAG 3.3.2/4.1.2). Add label sr-only + id.
-2. submit-lead.ts: `catch {}` engole erro sem log — contra regra CM. Add `console.error` (sem PII) antes da msg amigável.
-3. lead.schema.ts: telefone `min(8)` aceita lixo ("!!!!!!!!"). Add regex `/^[\d\s()+-]{8,20}$/`.
-4. Contacto.tsx: mensagens sucesso/erro sem `aria-live`/`role` — WCAG 4.1.3. Add role=status/alert + aria-live.
-
-Ficheiros: Contacto.tsx, submit-lead.ts, lead.schema.ts. Aplicar antes do go-live.
+**A corrigir (Importante) — TODAS CORRIGIDAS (commit bfefc77, 2026-07-19):**
+1. ✅ Contacto.tsx: labels sr-only + id nos inputs.
+2. ✅ submit-lead.ts: `console.error` no catch (sem PII).
+3. ✅ lead.schema.ts: regex `/^[\d\s()+-]{8,20}$/` + 2 testes novos.
+4. ✅ Contacto.tsx: role=status/alert + aria-live nas mensagens.
+Testes: 12/12 verdes.

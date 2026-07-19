@@ -9,7 +9,7 @@ export function Planos() {
       <p className="mt-4 text-center text-bm-cream/70">
         Musculação livre — escolhe o teu e começa hoje.
       </p>
-      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-8 grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
         {PLANS.map((p) => (
           <PlanoCard key={p.id} plano={p} />
         ))}

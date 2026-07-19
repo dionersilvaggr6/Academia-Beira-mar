@@ -11,28 +11,22 @@ function precoLabel(p: Plano): string {
 
 export function PlanoCard({ plano }: { plano: Plano }) {
   return (
-    <div
-      className={`flex flex-col rounded-2xl border p-6 transition hover:-translate-y-1 ${
-        plano.destaque
-          ? "border-bm-orange bg-bm-orange/10"
-          : "border-white/10 bg-white/5"
-      }`}
-    >
+    <div className="flex flex-col rounded-xl border border-bm-orange/25 bg-bm-orange/[0.04] p-4 backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-bm-orange/40">
       {plano.destaque && (
-        <span className="mb-2 w-fit rounded-full bg-bm-orange px-2 py-0.5 text-xs font-bold text-bm-black">
+        <span className="mb-1.5 w-fit rounded-full bg-bm-orange px-2 py-0.5 font-bold text-[10px] text-bm-black">
           MELHOR OFERTA
         </span>
       )}
-      <h3 className="text-lg font-bold text-bm-cream">{plano.nome}</h3>
-      <p className="mt-2 font-extrabold text-2xl text-bm-orange">
+      <h3 className="font-bold text-base text-bm-cream">{plano.nome}</h3>
+      <p className="mt-1 font-extrabold text-bm-orange text-xl">
         {precoLabel(plano)}
       </p>
-      <p className="text-bm-cream/60 text-sm">{plano.forma}</p>
+      <p className="text-bm-cream/50 text-xs">{plano.forma}</p>
       <a
         href={waLink({ plano: plano.nome })}
         target="_blank"
         rel="noopener noreferrer"
-        className="mt-4 inline-block rounded-lg bg-bm-orange px-4 py-2 text-center font-semibold text-bm-black transition hover:brightness-110"
+        className="mt-3 inline-block rounded-lg border border-bm-orange-light/50 bg-bm-orange-light/80 px-3 py-1.5 text-center font-semibold text-bm-black text-sm backdrop-blur-md transition hover:bg-bm-orange-light"
       >
         EU QUERO
       </a>
