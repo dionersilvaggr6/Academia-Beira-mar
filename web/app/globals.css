@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+/* Beira Mar — paleta oficial (do logótipo) */
+@theme {
+  --color-bm-black: #1a1a1a;
+  --color-bm-cream: #f5f0e8;
+  --color-bm-orange: #e8541e;
+}
+
+body {
+  background: var(--color-bm-black);
+  color: var(--color-bm-cream);
+  font-family: Arial, Helvetica, sans-serif;
+}
