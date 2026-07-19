@@ -2,7 +2,10 @@ import { z } from "zod";
 
 export const leadSchema = z.object({
   nome: z.string().min(2, "Nome muito curto"),
-  telefone: z.string().min(8, "Telefone inválido"),
+  telefone: z
+    .string()
+    .min(8, "Telefone inválido")
+    .regex(/^[\d\s()+-]{8,20}$/, "Telefone inválido"),
   interesse: z.string().optional(),
 });
 

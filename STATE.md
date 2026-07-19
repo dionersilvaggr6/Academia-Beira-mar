@@ -18,10 +18,13 @@ Snapshot determinístico. Atualizar a cada mudança de fase/tarefa.
 - [x] Instalar Node.js (v24.18.0 + npm 11.16.0, via winget)
 - [x] Task 0 — Scaffolding Next.js 16 + Tailwind v4 + Biome (commit 8d5179b)
 - [x] Task 1-3 — Camada de dados: conteúdo, planos, WhatsApp + testes 5/5 (commit d2451e4)
-- [ ] Task 6-9 — UI: cards, secções, formulário, layout ← próximo (não precisa Supabase)
-- [ ] Task 4-5 — Base de dados/lead: precisa Supabase (avisar Henrique)
-- [ ] Task 10-11 — E2E + verificação final
-- [ ] Publicação
+- [x] Task 4-5 — Base de dados/lead: código pronto (lazy), testes 10/10 (commit 9e1651b)
+- [x] Task 6-9 — UI completa + homepage montada (commit 9e1651b), a correr em localhost:3000
+- [x] Ligar Supabase — tabela `leads` criada, ligação testada (1 lead de teste inserido) ✅
+- [ ] ⚠️ Rotacionar a password do Supabase (foi colada no chat) — pendente, avisar Henrique
+- [ ] Task 10 — E2E do formulário (agora possível, Supabase ligado)
+- [ ] Task 11 — polimento final: rever responsivo + a11y no browser
+- [ ] Publicação (deploy — Vercel)
 
 ## Pendentes / decisões em aberto
 - Domínio + hosting (não bloqueia o desenvolvimento)

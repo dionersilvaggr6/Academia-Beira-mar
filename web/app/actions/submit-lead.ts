@@ -26,7 +26,9 @@ export async function submitLead(
   try {
     await getDb().insert(leads).values(parsed.data);
     return { ok: true };
-  } catch {
+  } catch (err) {
+    // Log do erro no servidor (sem PII — nunca os dados do lead)
+    console.error("[submitLead] falha ao gravar lead:", err);
     return {
       ok: false,
       error: "Não foi possível enviar agora. Tenta pelo WhatsApp.",

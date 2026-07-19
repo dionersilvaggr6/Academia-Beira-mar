@@ -19,4 +19,17 @@ describe("leadSchema", () => {
       false,
     );
   });
+
+  it("aceita telefone formatado", () => {
+    expect(
+      leadSchema.safeParse({ nome: "Ana", telefone: "(51) 99744-2463" })
+        .success,
+    ).toBe(true);
+  });
+
+  it("rejeita telefone com letras/símbolos", () => {
+    expect(
+      leadSchema.safeParse({ nome: "Ana", telefone: "!!!!!!!!" }).success,
+    ).toBe(false);
+  });
 });

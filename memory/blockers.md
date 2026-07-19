@@ -3,11 +3,12 @@
 (Nenhum bloqueio crítico. Dependências do cliente — fotos, logo SVG, gateway/CNPJ, domínio —
 não bloqueiam a Fase 1: usamos placeholders e WhatsApp.)
 
-## ⏰ LEMBRETE PENDENTE (pedido pelo Henrique 2026-07-19)
-**Supabase adiado.** Henrique pediu para ignorar o Supabase por agora e **lembrá-lo quando for necessário**.
-É necessário antes de:
-- Task 4, Step 4 — `drizzle-kit push` (criar a tabela `leads` na base de dados real)
-- Guardar leads a sério (a Server Action da Task 5 corre, mas os testes usam mock; sem DB real não grava)
-- Task 10 E2E contra DB real
-→ Quando chegar a esse ponto, PARAR e avisar o Henrique para criarmos a conta Supabase gratuita.
-O resto da Fase 1 (scaffold, planos, WhatsApp, secções, form na interface) corre sem isto.
+## ✅ Supabase — RESOLVIDO (2026-07-19)
+Conta criada, projeto `innnumingpzoptfpikzs` (região São Paulo, aws-1-sa-east-1, Session pooler porta 5432).
+Tabela `leads` criada via `drizzle-kit push`. Ligação testada (insert OK). `.env.local` tem a DATABASE_URL.
+
+## ⚠️ PENDENTE DE SEGURANÇA
+A password do Supabase foi **colada no chat** durante o setup. **Avisar o Henrique para fazer
+"Reset database password" no Supabase** quando o site estiver estável, e atualizar o `.env.local`
+com a nova (eu ajudo). Há também um **lead de teste** ("TESTE — Claude") na tabela que o Henrique
+pode apagar no Table Editor do Supabase.

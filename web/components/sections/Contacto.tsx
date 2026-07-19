@@ -20,31 +20,62 @@ export function Contacto() {
       <SectionTitle>Fala connosco</SectionTitle>
 
       {state?.ok ? (
-        <p className="mt-8 rounded-lg border border-green-500/40 bg-green-500/10 p-4 text-center text-bm-cream">
+        <p
+          role="status"
+          aria-live="polite"
+          className="mt-8 rounded-lg border border-green-500/40 bg-green-500/10 p-4 text-center text-bm-cream"
+        >
           Recebemos o teu contacto! Em breve falamos contigo. 💪
         </p>
       ) : (
         <form action={action} className="mt-8 space-y-4">
-          <input
-            name="nome"
-            required
-            placeholder="O teu nome"
-            className={inputClass}
-          />
-          <input
-            name="telefone"
-            required
-            placeholder="Telefone / WhatsApp"
-            className={inputClass}
-          />
-          <input
-            name="interesse"
-            placeholder="Plano ou modalidade (opcional)"
-            className={inputClass}
-          />
+          <div>
+            <label htmlFor="nome" className="sr-only">
+              Nome
+            </label>
+            <input
+              id="nome"
+              name="nome"
+              required
+              placeholder="O teu nome"
+              className={inputClass}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="telefone" className="sr-only">
+              Telefone ou WhatsApp
+            </label>
+            <input
+              id="telefone"
+              name="telefone"
+              required
+              inputMode="tel"
+              placeholder="Telefone / WhatsApp"
+              className={inputClass}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="interesse" className="sr-only">
+              Plano ou modalidade de interesse
+            </label>
+            <input
+              id="interesse"
+              name="interesse"
+              placeholder="Plano ou modalidade (opcional)"
+              className={inputClass}
+            />
+          </div>
 
           {state && !state.ok && (
-            <p className="text-red-400 text-sm">{state.error}</p>
+            <p
+              role="alert"
+              aria-live="assertive"
+              className="text-red-400 text-sm"
+            >
+              {state.error}
+            </p>
           )}
 
           <button
