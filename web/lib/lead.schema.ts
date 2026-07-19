@@ -5,7 +5,8 @@ export const leadSchema = z.object({
   telefone: z
     .string()
     .min(8, "Telefone inválido")
-    .regex(/^[\d\s()+-]{8,20}$/, "Telefone inválido"),
+    .regex(/^[\d\s()+-]{8,20}$/, "Telefone inválido")
+    .refine((v) => (v.match(/\d/g) ?? []).length >= 8, "Telefone inválido"),
   interesse: z.string().optional(),
 });
 

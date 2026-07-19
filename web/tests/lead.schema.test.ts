@@ -32,4 +32,10 @@ describe("leadSchema", () => {
       leadSchema.safeParse({ nome: "Ana", telefone: "!!!!!!!!" }).success,
     ).toBe(false);
   });
+
+  it("rejeita telefone sem dígitos", () => {
+    expect(
+      leadSchema.safeParse({ nome: "Ana", telefone: "++++++++" }).success,
+    ).toBe(false);
+  });
 });

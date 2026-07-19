@@ -26,6 +26,7 @@ export function PlanoCard({ plano }: { plano: Plano }) {
         href={waLink({ plano: plano.nome })}
         target="_blank"
         rel="noopener noreferrer"
+        aria-label={`Quero o plano ${plano.nome} — falar no WhatsApp`}
         className="mt-3 inline-block rounded-lg border border-bm-orange-light/50 bg-bm-orange-light/80 px-3 py-1.5 text-center font-semibold text-bm-black text-sm backdrop-blur-md transition hover:bg-bm-orange-light"
       >
         EU QUERO
