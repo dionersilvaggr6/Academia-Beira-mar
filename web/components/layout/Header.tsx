@@ -28,14 +28,22 @@ export function Header() {
             </a>
           ))}
         </nav>
-        <a
-          href={waLink()}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="rounded-lg bg-bm-orange px-4 py-2 font-semibold text-bm-black text-sm transition hover:brightness-110"
-        >
-          Matricular
-        </a>
+        <div className="flex items-center gap-2">
+          <a
+            href="/login"
+            className="rounded-lg border border-bm-cream/20 px-3 py-2 font-semibold text-bm-cream text-sm transition hover:border-bm-orange"
+          >
+            Entrar
+          </a>
+          <a
+            href={waLink()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-lg bg-bm-orange px-4 py-2 font-semibold text-bm-black text-sm transition hover:brightness-110"
+          >
+            Matricular
+          </a>
+        </div>
       </div>
     </header>
   );
