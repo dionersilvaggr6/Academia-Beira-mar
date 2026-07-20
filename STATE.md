@@ -5,7 +5,15 @@ Snapshot determinístico. Atualizar a cada mudança de fase/tarefa.
 ## Fase
 - **Atual:** Fase 1 — **COMPLETA e integrada na `main`** (2026-07-19)
 - **Etapa do método:** todos os passos CM fechados (SPEC→plano→código→revisões→verificação→merge)
-- **Próximo:** itens do cliente (rotacionar password, GitHub/Vercel, fotos/logo reais) → deploy → Fase 2
+- **GitHub:** ✅ https://github.com/dionersilvaggr6/Academia-Beira-mar (branch main)
+- **Vercel:** ✅ **NO AR** em https://academia-beira-mar.vercel.app (root=web, env DATABASE_URL set) — 2026-07-20
+- **Próximo:** testar form→Supabase na produção · selo Gympass/bio · favicon/OG · fotos/logo reais
+
+## Fase 2A (área de aluno — fundação)
+- Design **aprovado** (2026-07-20): Supabase Auth (convite), papéis aluno/instrutor, treinos por divisão (A/B/C), RLS.
+- SPEC escrita: docs/superpowers/specs/2026-07-20-fase2a-auth-treinos.md → **aguarda revisão do Henrique**
+- Decomposição: 2A (login+treinos) → 2B (agenda) → 2C (plano+avaliação).
+- Nota: Henrique optou por NÃO rotacionar a password Supabase (decisão dele). Token GitHub PAT exposto no chat — não revogado (decisão dele).
 
 ## Tarefas
 - [x] Analisar site de referência (26fit)
