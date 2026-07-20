@@ -38,8 +38,11 @@ por divisão, e o aluno consegue entrar e ver só os seus treinos — de forma s
 
 | Papel | Como nasce | O que pode |
 |-------|-----------|-----------|
-| **instrutor** | Criado manualmente no arranque (bootstrap, poucos) | Gerir alunos e treinos dos seus alunos |
-| **aluno** | Criado pelo instrutor (após fechar plano) via convite | Ver só os seus treinos; definir/alterar a sua senha |
+| **instrutor** | 1º criado à mão (bootstrap); os seguintes **convidados por outro instrutor** | Gerir **todos** os alunos e treinos; convidar alunos e outros instrutores |
+| **aluno** | Criado por um instrutor (após fechar plano) via convite | Ver só os seus treinos; definir/alterar a sua senha |
+
+> **Nota (ponto 3):** qualquer instrutor pode criar/editar os treinos de **qualquer** aluno.
+> O campo `created_by` fica só para registo (auditoria), não limita permissões.
 
 ---
 
@@ -49,6 +52,11 @@ por divisão, e o aluno consegue entrar e ver só os seus treinos — de forma s
 1. Instrutor entra em `/instrutor` → "Novo aluno" → introduz nome + email (+ telefone).
 2. O sistema cria o utilizador no Supabase Auth e envia **convite por email**.
 3. O aluno recebe o email → clica → **define a própria senha** → fica com acesso a `/aluno`.
+
+**Criar instrutor (qualquer instrutor):**
+1. Em `/instrutor` → "Novo instrutor" → nome + email.
+2. Envia convite com papel `instrutor`; o novo instrutor define a senha e passa a gerir tudo.
+3. O **1º instrutor** de todos é criado à mão no arranque (bootstrap).
 
 **Montar treino (instrutor):**
 1. No painel, escolhe um aluno → "Treinos".
@@ -97,8 +105,9 @@ Sobre o `auth.users` (gerido pelo Supabase Auth):
 
 - **RLS (Row Level Security)** ativa nas 3 tabelas:
   - `aluno` só faz SELECT dos treinos/exercícios onde `aluno_id = auth.uid()`.
-  - `instrutor` faz SELECT/INSERT/UPDATE/DELETE dos treinos dos seus alunos.
-  - `profiles`: cada um lê o seu; instrutor lê os alunos.
+  - `instrutor` faz SELECT/INSERT/UPDATE/DELETE em **todos** os treinos/exercícios e alunos.
+  - `profiles`: cada um lê o seu; instrutor lê e gere todos.
+  - O papel é verificado por uma função segura (ex.: `is_instrutor()`) usada nas políticas.
 - **Sessões** via cookies do Supabase (`@supabase/ssr`); páginas `/aluno` e `/instrutor`
   protegidas por **middleware** do Next.js (redireciona quem não tem sessão/papel).
 - **Convites e criação de utilizadores** usam a **service role key** do Supabase —
@@ -129,15 +138,17 @@ Sobre o `auth.users` (gerido pelo Supabase Auth):
 
 ## 9. Dependências (a preparar; não bloqueiam o desenho)
 
-- **Conta(s) de instrutor** — criadas manualmente no arranque (bootstrap).
-- **Envio de emails de convite** — configurar no Supabase (email por defeito ou SMTP próprio).
+- **1º instrutor** — criado manualmente no arranque (bootstrap); os seguintes por convite.
+- **Envio de emails de convite** — **email por defeito do Supabase** (sem SMTP próprio por agora).
 - **Service role key** do Supabase → adicionar ao `.env.local` e à Vercel (env do servidor).
 - **Base de dados de TESTE/staging** — para o E2E não escrever na produção (dívida herdada da Fase 1).
 
 ---
 
-## 10. Questões em aberto (fechar no plano)
+## 10. Questões em aberto — RESOLVIDAS (2026-07-20)
 
-1. Confirmar o serviço de email dos convites (Supabase default vs SMTP próprio).
-2. Quantos instrutores no arranque? (para o bootstrap)
-3. Um aluno pode ter mais que um instrutor? (assumido: não — 1 instrutor por aluno via `created_by`)
+1. ✅ **Emails de convite:** usar o **email por defeito do Supabase**.
+2. ✅ **Instrutores:** 1º criado à mão (bootstrap); os seguintes **convidados por outro instrutor** no painel.
+3. ✅ **Permissões:** **qualquer instrutor** cria/edita treinos de **qualquer** aluno (não há dono).
+
+(Sem questões em aberto — pronto para o plano.)
