@@ -3,8 +3,9 @@
 Snapshot determinístico. Atualizar a cada mudança de fase/tarefa.
 
 ## Fase
-- **Atual:** Fase 1 — Site institucional + Planos + Captação
-- **Etapa do método:** SPEC **aprovada pelo Henrique** → próximo: plano de implementação (writing-plans)
+- **Atual:** Fase 1 — **COMPLETA e integrada na `main`** (2026-07-19)
+- **Etapa do método:** todos os passos CM fechados (SPEC→plano→código→revisões→verificação→merge)
+- **Próximo:** itens do cliente (rotacionar password, GitHub/Vercel, fotos/logo reais) → deploy → Fase 2
 
 ## Tarefas
 - [x] Analisar site de referência (26fit)
