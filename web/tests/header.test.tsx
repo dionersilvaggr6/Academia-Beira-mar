@@ -1,0 +1,46 @@
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
+import { Header } from "@/components/layout/Header";
+
+// Mock the waLink function
+vi.mock("@/lib/whatsapp", () => ({
+  waLink: () => "https://wa.me/5551997442463",
+}));
+
+// Mock next/navigation
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+  }),
+  usePathname: () => "/",
+}));
+
+describe("Header", () => {
+  it("renders BEIRA MAR text", () => {
+    render(<Header />);
+    expect(screen.getByText("BEIRA MAR")).toBeInTheDocument();
+  });
+
+  it("renders WhatsApp link", () => {
+    render(<Header />);
+    const whatsappLink = screen.getByRole("link", { name: /Matricular/i });
+    expect(whatsappLink).toBeInTheDocument();
+    expect(whatsappLink).toHaveAttribute("href", "https://wa.me/5551997442463");
+    expect(whatsappLink).toHaveAttribute("target", "_blank");
+  });
+
+  it("renders login link", () => {
+    render(<Header />);
+    const loginLink = screen.getByRole("link", { name: /Entrar/i });
+    expect(loginLink).toBeInTheDocument();
+    expect(loginLink).toHaveAttribute("href", "/login");
+  });
+
+  it("renders navigation items", () => {
+    render(<Header />);
+    expect(screen.getByText("Modalidades")).toBeInTheDocument();
+    expect(screen.getByText("Planos")).toBeInTheDocument();
+    expect(screen.getByText("Depoimentos")).toBeInTheDocument();
+    expect(screen.getByText("Onde estamos")).toBeInTheDocument();
+  });
+});
