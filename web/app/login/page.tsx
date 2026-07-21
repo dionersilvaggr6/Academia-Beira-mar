@@ -33,6 +33,12 @@ export default async function LoginPage({
           senha, ou peça um novo convite.
         </p>
       )}
+      {erro === "link" && (
+        <p role="alert" className="mt-4 text-center text-err text-sm">
+          Esse link expirou ou já foi usado. Peça um novo em “Esqueceu sua
+          senha?” logo abaixo, ou peça um novo convite ao instrutor.
+        </p>
+      )}
       <LoginForm />
       <p className="mt-4 text-center text-fg-dim text-xs">
         <Link

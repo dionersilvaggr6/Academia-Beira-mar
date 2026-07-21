@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect } from "react";
-import { parseHashTokens } from "@/lib/auth/hash-tokens";
+import { parseHashError, parseHashTokens } from "@/lib/auth/hash-tokens";
 
 const DEFINIR_SENHA_PATH = "/definir-senha";
+const LOGIN_PATH = "/login";
 const REDIRECT_TYPES = new Set(["invite", "recovery"]);
 
 /**
@@ -22,6 +23,15 @@ const REDIRECT_TYPES = new Set(["invite", "recovery"]);
 export function InviteHashRedirect() {
   useEffect(() => {
     if (window.location.pathname === DEFINIR_SENHA_PATH) return;
+
+    // Link inválido (expirado ou já usado): o Supabase devolve só um erro na
+    // hash, sem tokens. Sem tratar isto, a pessoa ficava parada aqui sem
+    // perceber porquê — em vez disso levamo-la ao login com explicação.
+    const erro = parseHashError(window.location.hash);
+    if (erro) {
+      window.location.replace(`${LOGIN_PATH}?erro=link`);
+      return;
+    }
 
     const tokens = parseHashTokens(window.location.hash);
     if (!tokens?.type || !REDIRECT_TYPES.has(tokens.type)) return;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseHashTokens } from "@/lib/auth/hash-tokens";
+import { parseHashError, parseHashTokens } from "@/lib/auth/hash-tokens";
 
 describe("parseHashTokens", () => {
   it("devolve os tokens de uma hash de convite válida", () => {
@@ -54,5 +54,27 @@ describe("parseHashTokens", () => {
       refreshToken: "def456",
       type: null,
     });
+  });
+});
+
+describe("parseHashError", () => {
+  it("deteta um link expirado (caso real do Supabase)", () => {
+    const hash =
+      "#error=access_denied&error_code=otp_expired&error_description=Email+link+is+invalid+or+has+expired";
+    expect(parseHashError(hash)).toBe("otp_expired");
+  });
+
+  it("cai para o campo error quando não há error_code", () => {
+    expect(parseHashError("#error=access_denied")).toBe("access_denied");
+  });
+
+  it("devolve null quando a hash está vazia", () => {
+    expect(parseHashError("")).toBeNull();
+    expect(parseHashError("#")).toBeNull();
+  });
+
+  it("devolve null quando a hash traz tokens válidos (não é erro)", () => {
+    const hash = "#access_token=abc&refresh_token=def&type=recovery";
+    expect(parseHashError(hash)).toBeNull();
   });
 });
