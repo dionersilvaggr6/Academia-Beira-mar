@@ -51,6 +51,10 @@ export function Localizacao() {
               className="h-80 w-full md:h-full"
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
+              style={{
+                filter:
+                  "invert(0.92) hue-rotate(180deg) brightness(0.9) contrast(0.9) saturate(0.85)",
+              }}
             />
           </div>
         </div>
