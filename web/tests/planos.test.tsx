@@ -59,4 +59,36 @@ describe("Planos", () => {
 
     expect(screen.getByText("Diária")).toBeInTheDocument();
   });
+
+  it("recorrente group has no Avulso-only plans", () => {
+    render(<Planos />);
+
+    expect(screen.getByText("Mensal Recorrente")).toBeInTheDocument();
+    expect(screen.getByText("Anual à Vista")).toBeInTheDocument();
+    expect(screen.queryByText("Diária")).not.toBeInTheDocument();
+    expect(screen.queryByText("Semanal")).not.toBeInTheDocument();
+  });
+
+  it("avulso group has no Recorrente-only plans", () => {
+    render(<Planos />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Avulso" }));
+
+    expect(screen.getByText("Diária")).toBeInTheDocument();
+    expect(screen.getByText("Semanal")).toBeInTheDocument();
+    expect(screen.queryByText("Mensal Recorrente")).not.toBeInTheDocument();
+    expect(screen.queryByText("Anual à Vista")).not.toBeInTheDocument();
+  });
+
+  it("toggling back to Recorrente restores the recorrente-only plans", () => {
+    render(<Planos />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Avulso" }));
+    expect(screen.queryByText("Anual à Vista")).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Recorrente" }));
+
+    expect(screen.getByText("Anual à Vista")).toBeInTheDocument();
+    expect(screen.queryByText("Diária")).not.toBeInTheDocument();
+  });
 });
