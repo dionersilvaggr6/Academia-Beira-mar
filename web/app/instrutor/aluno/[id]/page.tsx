@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AplicarModeloForm } from "@/components/instrutor/AplicarModeloForm";
 import { CriarTreinoForm } from "@/components/instrutor/CriarTreinoForm";
 import { TreinoItem } from "@/components/instrutor/TreinoItem";
 import { requireRole } from "@/lib/auth/profile";
@@ -59,6 +60,11 @@ export default async function GerirAlunoPage({
       <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.03] p-4">
         <h2 className="font-bold text-fg">Nova divisão</h2>
         <CriarTreinoForm alunoId={id} />
+      </div>
+
+      <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.03] p-4">
+        <h2 className="font-bold text-fg">Aplicar modelo pronto</h2>
+        <AplicarModeloForm alunoId={id} />
       </div>
 
       <div className="mt-6 space-y-4">

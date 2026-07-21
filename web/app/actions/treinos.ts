@@ -5,14 +5,22 @@ import { requireRole } from "@/lib/auth/profile";
 import {
   apagarExercicioSchema,
   apagarTreinoSchema,
+  aplicarModeloSchema,
   editarExercicioSchema,
   editarTreinoSchema,
   exercicioSchema,
   treinoSchema,
 } from "@/lib/schemas/treino.schema";
 import { createClient } from "@/lib/supabase/server";
+import { MODELOS } from "@/lib/treinos/modelos";
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
+
+// Séries/repetições ficam sempre à escolha do instrutor por aluno; a BD exige
+// NOT NULL nestas colunas, por isso um modelo aplica um valor neutro que a UI
+// deixa claro que precisa de ajuste (não é uma prescrição real).
+const SERIES_PLACEHOLDER = 3;
+const REPETICOES_PLACEHOLDER = "10-12";
 
 /** Cria uma divisão de treino para um aluno (só instrutores). */
 export async function criarTreino(
@@ -86,6 +94,92 @@ export async function criarExercicio(
   }
 
   revalidatePath("/instrutor");
+  return { ok: true };
+}
+
+/**
+ * Aplica um modelo de treino pronto a um aluno (só instrutores): cria uma
+ * divisão por cada `divisao` do modelo, com os exercícios já preenchidos.
+ * Séries/repetições ficam com um valor provisório — o instrutor ajusta depois.
+ */
+export async function aplicarModelo(
+  _prev: ActionResult | null,
+  formData: FormData,
+): Promise<ActionResult> {
+  const instrutor = await requireRole("instrutor");
+
+  const parsed = aplicarModeloSchema.safeParse({
+    alunoId: formData.get("alunoId"),
+    modeloId: formData.get("modeloId"),
+  });
+  if (!parsed.success) {
+    return {
+      ok: false,
+      error: parsed.error.issues[0]?.message ?? "Dados inválidos",
+    };
+  }
+
+  const modelo = MODELOS.find((m) => m.id === parsed.data.modeloId);
+  if (!modelo) {
+    return { ok: false, error: "Modelo inválido" };
+  }
+
+  const supabase = await createClient();
+
+  for (const [i, divisao] of modelo.divisoes.entries()) {
+    const { data: treino, error: treinoError } = await supabase
+      .from("treinos")
+      .insert({
+        aluno_id: parsed.data.alunoId,
+        nome: divisao.nome,
+        foco: divisao.foco,
+        ordem: i,
+        created_by: instrutor.id,
+      })
+      .select("id")
+      .single();
+
+    if (treinoError || !treino) {
+      console.error(
+        "[aplicarModelo] falha ao criar divisão:",
+        treinoError?.message,
+      );
+      return {
+        ok: false,
+        error:
+          i > 0
+            ? `Não foi possível criar a divisão "${divisao.nome}". As primeiras ${i} divisões já foram aplicadas — confere o treino do aluno antes de tentar de novo.`
+            : `Não foi possível aplicar o modelo (falhou ao criar "${divisao.nome}").`,
+      };
+    }
+
+    const exerciciosRows = divisao.exercicios.map((nome, idx) => ({
+      treino_id: treino.id,
+      nome,
+      series: SERIES_PLACEHOLDER,
+      repeticoes: REPETICOES_PLACEHOLDER,
+      carga: null,
+      observacoes: null,
+      ordem: idx,
+    }));
+
+    const { error: exerciciosError } = await supabase
+      .from("exercicios")
+      .insert(exerciciosRows);
+
+    if (exerciciosError) {
+      console.error(
+        "[aplicarModelo] falha ao criar exercícios:",
+        exerciciosError.message,
+      );
+      return {
+        ok: false,
+        error: `A divisão "${divisao.nome}" foi criada, mas os exercícios não — confere o treino do aluno antes de tentar de novo.`,
+      };
+    }
+  }
+
+  revalidatePath(`/instrutor/aluno/${parsed.data.alunoId}`);
   return { ok: true };
 }
 

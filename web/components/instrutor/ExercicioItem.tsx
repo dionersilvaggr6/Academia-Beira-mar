@@ -6,6 +6,7 @@ import {
   apagarExercicio,
   editarExercicio,
 } from "@/app/actions/treinos";
+import { ExercicioNomeSelect } from "@/components/instrutor/ExercicioNomeSelect";
 
 const input =
   "rounded-lg border border-white/10 bg-white/5 p-2 text-fg text-sm placeholder:text-fg-dim focus:border-flame focus:outline-none";
@@ -51,13 +52,7 @@ export function ExercicioItem({
         >
           <input type="hidden" name="id" value={exercicio.id} />
           <input type="hidden" name="alunoId" value={alunoId} />
-          <input
-            name="nome"
-            required
-            defaultValue={exercicio.nome}
-            className={`${input} w-full sm:w-auto`}
-            aria-label="Exercício"
-          />
+          <ExercicioNomeSelect defaultValue={exercicio.nome} />
           <input
             name="series"
             type="number"
