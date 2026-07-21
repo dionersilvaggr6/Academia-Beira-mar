@@ -5,6 +5,7 @@ import { useReducedMotion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { particleCount } from "@/lib/device";
+import { CanvasBoundary } from "./CanvasBoundary";
 import { ParticleFallback } from "./ParticleFallback";
 import { buildTargetShapes } from "./particle-shapes";
 
@@ -17,6 +18,19 @@ const POINTER_DAMPING = 4;
 // in case the CSS custom properties can't be read (e.g. no `document`).
 const FLAME_FALLBACK = "#ff6a2b";
 const FLAME_HI_FALLBACK = "#ffa15e";
+
+// Feature-detects WebGL before we ever try to mount `<Canvas>`. Motion being
+// allowed (not `reduced`) doesn't imply the browser/GPU can actually give us
+// a WebGL context (headless CI, locked-down GPUs, some in-app webviews).
+function hasWebGL(): boolean {
+  if (typeof document === "undefined") return false;
+  try {
+    const canvas = document.createElement("canvas");
+    return !!(canvas.getContext("webgl2") || canvas.getContext("webgl"));
+  } catch {
+    return false;
+  }
+}
 
 function readCssColor(variableName: string, fallback: string): THREE.Color {
   if (typeof window === "undefined") return new THREE.Color(fallback);
@@ -109,22 +123,47 @@ function MorphingPoints({ count }: { count: number }) {
 export default function ParticleField() {
   const reduced = useReducedMotion();
   const [count, setCount] = useState(0);
+  const [webglSupported, setWebglSupported] = useState(true);
+  const [visible, setVisible] = useState(true);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setCount(particleCount(window.innerWidth, !!reduced));
+    setWebglSupported(hasWebGL());
   }, [reduced]);
 
-  if (reduced || count === 0) return <ParticleFallback />;
+  // Pause the render loop whenever the hero scrolls out of view. The
+  // container div is always mounted (see below), so this ref never goes
+  // stale across the reduced/webgl/count state transitions above.
+  useEffect(() => {
+    const node = containerRef.current;
+    if (!node || typeof IntersectionObserver === "undefined") return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setVisible(entry?.isIntersecting ?? true),
+      { threshold: 0 },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  const showCanvas = !reduced && count > 0 && webglSupported;
 
   return (
-    <div className="absolute inset-0 -z-10" aria-hidden>
-      <Canvas
-        camera={{ position: [0, 0, 5], fov: 50 }}
-        dpr={[1, 2]}
-        gl={{ antialias: true, alpha: true }}
-      >
-        <MorphingPoints count={count} />
-      </Canvas>
+    <div ref={containerRef} className="absolute inset-0 -z-10" aria-hidden>
+      {showCanvas ? (
+        <CanvasBoundary>
+          <Canvas
+            camera={{ position: [0, 0, 5], fov: 50 }}
+            dpr={[1, 2]}
+            gl={{ antialias: true, alpha: true }}
+            frameloop={visible ? "always" : "never"}
+          >
+            <MorphingPoints count={count} />
+          </Canvas>
+        </CanvasBoundary>
+      ) : (
+        <ParticleFallback />
+      )}
     </div>
   );
 }

@@ -20,18 +20,18 @@ export default async function AlunoPage() {
           <h1 className="font-extrabold text-2xl text-fg uppercase">
             Olá, {profile.nome}
           </h1>
-          <p className="text-fg-dim text-sm">Os teus treinos</p>
+          <p className="text-fg-dim text-sm">Os seus treinos</p>
         </div>
         <LogoutButton />
       </header>
 
       {error ? (
-        <p role="alert" className="mt-8 text-red-400">
+        <p role="alert" className="mt-8 text-err">
           Não foi possível carregar os treinos.
         </p>
       ) : !treinos || treinos.length === 0 ? (
         <p className="mt-8 text-fg-dim">
-          Ainda não tens treinos. Fala com o teu instrutor. 💪
+          Ainda não tem treinos. Fale com o seu instrutor. 💪
         </p>
       ) : (
         <div className="mt-8 grid gap-3">

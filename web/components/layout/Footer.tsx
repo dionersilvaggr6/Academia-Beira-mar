@@ -3,11 +3,11 @@ import { SITE } from "@/content/site";
 import { waLink } from "@/lib/whatsapp";
 
 const NAV = [
-  { href: "#modalidades", label: "Modalidades" },
-  { href: "#planos", label: "Planos" },
-  { href: "#sobre", label: "Sobre" },
-  { href: "#localizacao", label: "Onde estamos" },
-  { href: "#contacto", label: "Contacto" },
+  { href: "/#modalidades", label: "Modalidades" },
+  { href: "/#planos", label: "Planos" },
+  { href: "/#sobre", label: "Sobre" },
+  { href: "/#localizacao", label: "Onde estamos" },
+  { href: "/#contacto", label: "Contato" },
 ];
 
 export function Footer() {
@@ -16,7 +16,7 @@ export function Footer() {
       <Container className="grid gap-10 md:grid-cols-4">
         <div>
           <a
-            href="#inicio"
+            href="/"
             className="flex items-center gap-2 font-display font-bold text-fg tracking-wide"
           >
             <img src="/brand/mark.svg" alt="" width={26} height={26} /> BEIRA
@@ -53,7 +53,7 @@ export function Footer() {
 
         <div>
           <p className="font-display text-flame text-sm uppercase tracking-wide">
-            Contacto
+            Contato
           </p>
           <p className="mt-3 font-sans text-fg-dim text-sm">{SITE.address}</p>
           <p className="font-sans text-fg-dim text-sm">{SITE.city}</p>

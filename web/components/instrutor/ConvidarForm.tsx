@@ -42,7 +42,7 @@ export function ConvidarForm({
         </p>
       )}
       {state && !state.ok && (
-        <p role="alert" aria-live="assertive" className="text-red-400 text-sm">
+        <p role="alert" aria-live="assertive" className="text-err text-sm">
           {state.error}
         </p>
       )}
@@ -51,7 +51,7 @@ export function ConvidarForm({
         disabled={pending}
         className="w-full rounded-lg bg-flame p-2 font-semibold text-ink text-sm transition hover:brightness-110 disabled:opacity-60"
       >
-        {pending ? "A convidar…" : label}
+        {pending ? "Convidando…" : label}
       </button>
     </form>
   );

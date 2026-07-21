@@ -48,6 +48,23 @@ describe("Galeria", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
+  it("returns focus to the thumbnail that opened the lightbox on close", async () => {
+    const { Galeria } = await import("@/components/sections/Galeria");
+    render(<Galeria />);
+
+    const thumbs = screen.getAllByRole("button");
+    const secondThumb = thumbs[1];
+    expect(secondThumb).toBeDefined();
+    if (secondThumb) fireEvent.click(secondThumb);
+
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+
+    fireEvent.keyDown(document, { key: "Escape" });
+
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(secondThumb).toHaveFocus();
+  });
+
   it("closes the lightbox on backdrop click", async () => {
     const { Galeria } = await import("@/components/sections/Galeria");
     render(<Galeria />);

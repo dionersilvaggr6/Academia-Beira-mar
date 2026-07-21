@@ -42,7 +42,7 @@ export function LoginForm() {
       </div>
 
       {state && !state.ok && (
-        <p role="alert" aria-live="assertive" className="text-red-400 text-sm">
+        <p role="alert" aria-live="assertive" className="text-err text-sm">
           {state.error}
         </p>
       )}
@@ -52,7 +52,7 @@ export function LoginForm() {
         disabled={pending}
         className="w-full rounded-lg bg-flame p-3 font-bold text-ink transition hover:brightness-110 disabled:opacity-60"
       >
-        {pending ? "A entrar…" : "Entrar"}
+        {pending ? "Entrando…" : "Entrar"}
       </button>
     </form>
   );

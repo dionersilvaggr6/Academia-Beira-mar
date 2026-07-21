@@ -31,5 +31,5 @@ test("formulário envia um lead válido (requer BD de teste)", async ({
   await page.getByLabel("Telefone ou WhatsApp").fill("51999999999");
   await page.getByLabel("Plano ou modalidade de interesse").fill("E2E");
   await page.getByRole("button", { name: /quero começar/i }).click();
-  await expect(page.getByText(/recebemos o teu contacto/i)).toBeVisible();
+  await expect(page.getByText(/recebemos o seu contato/i)).toBeVisible();
 });

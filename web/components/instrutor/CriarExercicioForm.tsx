@@ -52,7 +52,7 @@ export function CriarExercicioForm({ treinoId }: { treinoId: string }) {
         {pending ? "…" : "+ Exercício"}
       </button>
       {state && !state.ok && (
-        <p role="alert" className="w-full text-red-400 text-sm">
+        <p role="alert" className="w-full text-err text-sm">
           {state.error}
         </p>
       )}

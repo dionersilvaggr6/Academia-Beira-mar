@@ -38,7 +38,7 @@ export default async function InstrutorPage() {
       <h2 className="mt-10 font-bold text-flame">Alunos</h2>
       {!alunos || alunos.length === 0 ? (
         <p className="mt-2 text-fg-dim">
-          Ainda não há alunos. Convida o primeiro acima.
+          Ainda não há alunos. Convide o primeiro acima.
         </p>
       ) : (
         <div className="mt-3 grid gap-2">

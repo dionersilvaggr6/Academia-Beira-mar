@@ -7,10 +7,10 @@ import { cn } from "@/lib/ui/cn";
 import { waLink } from "@/lib/whatsapp";
 
 const NAV = [
-  { href: "#modalidades", label: "Modalidades" },
-  { href: "#planos", label: "Planos" },
-  { href: "#depoimentos", label: "Depoimentos" },
-  { href: "#localizacao", label: "Onde estamos" },
+  { href: "/#modalidades", label: "Modalidades" },
+  { href: "/#planos", label: "Planos" },
+  { href: "/#depoimentos", label: "Depoimentos" },
+  { href: "/#localizacao", label: "Onde estamos" },
 ];
 
 export function Header() {
@@ -38,7 +38,7 @@ export function Header() {
     >
       <Container className="flex items-center justify-between py-3">
         <a
-          href="#inicio"
+          href="/"
           className="flex items-center gap-2 font-display font-bold text-fg tracking-wide"
         >
           <img src="/brand/mark.svg" alt="" width={26} height={26} /> BEIRA MAR

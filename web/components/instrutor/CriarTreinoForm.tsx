@@ -36,7 +36,7 @@ export function CriarTreinoForm({ alunoId }: { alunoId: string }) {
         {pending ? "…" : "Adicionar divisão"}
       </button>
       {state && !state.ok && (
-        <p role="alert" className="w-full text-red-400 text-sm">
+        <p role="alert" className="w-full text-err text-sm">
           {state.error}
         </p>
       )}

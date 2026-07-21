@@ -21,7 +21,7 @@ export function Contacto() {
     <section id="contacto" className="py-20 md:py-28">
       <Container className="max-w-lg">
         <h2 className="text-center font-display text-3xl text-fg uppercase md:text-4xl">
-          Fala connosco
+          Fale conosco
         </h2>
 
         <GlassCard className="mt-10">
@@ -31,7 +31,7 @@ export function Contacto() {
               aria-live="polite"
               className="rounded-lg border border-ok/40 bg-ok/10 p-4 text-center font-sans text-fg"
             >
-              Recebemos o teu contacto! Em breve falamos contigo. 💪
+              Recebemos o seu contato! Em breve falamos com você. 💪
             </p>
           ) : (
             <form action={action} className="space-y-4">
@@ -43,7 +43,7 @@ export function Contacto() {
                   id="nome"
                   name="nome"
                   required
-                  placeholder="O teu nome"
+                  placeholder="Seu nome"
                   className={inputClass}
                 />
               </div>
@@ -85,7 +85,7 @@ export function Contacto() {
               )}
 
               <Button type="submit" disabled={pending} className="w-full">
-                {pending ? "A enviar…" : "Quero começar"}
+                {pending ? "Enviando…" : "Quero começar"}
               </Button>
 
               <a
@@ -94,7 +94,7 @@ export function Contacto() {
                 rel="noopener noreferrer"
                 className="block text-center font-sans text-flame text-sm"
               >
-                ou fala connosco no WhatsApp {SITE.whatsappDisplay}
+                ou fale conosco no WhatsApp {SITE.whatsappDisplay}
               </a>
             </form>
           )}

@@ -6,7 +6,7 @@ import { SITE } from "@/content/site";
 describe("Contacto", () => {
   it("renders the form fields nome/telefone/interesse", () => {
     render(<Contacto />);
-    expect(screen.getByPlaceholderText("O teu nome")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("Seu nome")).toBeInTheDocument();
     expect(
       screen.getByPlaceholderText("Telefone / WhatsApp"),
     ).toBeInTheDocument();

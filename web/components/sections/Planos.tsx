@@ -45,7 +45,7 @@ export function Planos() {
             variants={fadeUp}
             className="mt-4 text-center font-sans text-fg-dim"
           >
-            Musculação livre — escolhe o teu e começa hoje.
+            Musculação livre — escolha o seu e comece hoje.
           </motion.p>
 
           <motion.div

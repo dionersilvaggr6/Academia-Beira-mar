@@ -14,7 +14,7 @@ export default async function LoginPage() {
         Área do <span className="text-flame">Aluno</span>
       </h1>
       <p className="mt-2 text-center text-fg-dim text-sm">
-        Entra com o teu email e senha.
+        Entre com seu email e senha.
       </p>
       <LoginForm />
     </section>

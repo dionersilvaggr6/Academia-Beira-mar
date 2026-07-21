@@ -30,4 +30,16 @@ describe("Footer", () => {
       expect(screen.getByText(`${h.dias}: ${h.horas}`)).toBeInTheDocument();
     }
   });
+
+  it("uses root-relative anchors so nav still works from other routes", () => {
+    render(<Footer />);
+    expect(screen.getByRole("link", { name: "Contato" })).toHaveAttribute(
+      "href",
+      "/#contacto",
+    );
+    expect(screen.getByRole("link", { name: "BEIRA MAR" })).toHaveAttribute(
+      "href",
+      "/",
+    );
+  });
 });

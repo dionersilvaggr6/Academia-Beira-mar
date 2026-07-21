@@ -43,4 +43,16 @@ describe("Header", () => {
     expect(screen.getByText("Depoimentos")).toBeInTheDocument();
     expect(screen.getByText("Onde estamos")).toBeInTheDocument();
   });
+
+  it("uses root-relative anchors so nav still works from other routes", () => {
+    render(<Header />);
+    expect(screen.getByRole("link", { name: "Modalidades" })).toHaveAttribute(
+      "href",
+      "/#modalidades",
+    );
+    expect(screen.getByRole("link", { name: "BEIRA MAR" })).toHaveAttribute(
+      "href",
+      "/",
+    );
+  });
 });

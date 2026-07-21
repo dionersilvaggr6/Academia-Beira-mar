@@ -18,8 +18,17 @@ const GALLERY_IMAGES: readonly GalleryImage[] = Array.from(
 export function Galeria() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const triggerRef = useRef<HTMLButtonElement | null>(null);
 
   const close = useCallback(() => setOpenIndex(null), []);
+
+  const openFrom = useCallback(
+    (index: number) => (event: React.MouseEvent<HTMLButtonElement>) => {
+      triggerRef.current = event.currentTarget;
+      setOpenIndex(index);
+    },
+    [],
+  );
 
   useEffect(() => {
     if (openIndex === null) return;
@@ -40,7 +49,12 @@ export function Galeria() {
     }
 
     document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      // Return focus to the thumbnail that opened the lightbox, so
+      // keyboard/screen-reader users land back where they started.
+      triggerRef.current?.focus();
+    };
   }, [openIndex, close]);
 
   if (!SITE.flags.galeria) return null;
@@ -59,7 +73,7 @@ export function Galeria() {
             <button
               key={image.src}
               type="button"
-              onClick={() => setOpenIndex(index)}
+              onClick={openFrom(index)}
               aria-label={`Ampliar ${image.alt}`}
               className="group relative aspect-square overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-surface-2 via-surface to-ink transition-colors duration-300 hover:border-flame/50"
             >

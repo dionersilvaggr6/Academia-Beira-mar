@@ -3,6 +3,7 @@ import { Chakra_Petch, Inter } from "next/font/google";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { WhatsappFab } from "@/components/layout/WhatsappFab";
+import { MotionProvider } from "@/components/MotionProvider";
 import "./globals.css";
 
 const chakra = Chakra_Petch({
@@ -15,7 +16,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 export const metadata: Metadata = {
   title: "Academia Beira Mar — Capão da Canoa | Aqui Evoluímos",
   description:
-    "Musculação, Pilates e Funcional em Capão da Canoa. Aparelhos novos, climatizada, ambiente familiar. 5★ no Google. Vê os planos e matricula-te.",
+    "Musculação, Pilates e Funcional em Capão da Canoa. Aparelhos novos, climatizada, ambiente familiar. 5★ no Google. Veja os planos e matricule-se.",
   openGraph: {
     title: "Academia Beira Mar — Aqui Evoluímos",
     description: "Musculação · Pilates · Funcional em Capão da Canoa.",
@@ -33,10 +34,12 @@ export default function RootLayout({
       className={`${chakra.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-ink text-fg">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <WhatsappFab />
+        <MotionProvider>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <WhatsappFab />
+        </MotionProvider>
       </body>
     </html>
   );

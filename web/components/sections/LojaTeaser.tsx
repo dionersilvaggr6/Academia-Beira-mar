@@ -17,7 +17,7 @@ export function LojaTeaser() {
               Suplementos na academia
             </h2>
             <p className="mt-3 font-sans text-fg-dim">
-              Loja online em breve. Por enquanto, fale connosco na academia.
+              Loja online em breve. Por enquanto, fale conosco na academia.
             </p>
           </div>
 
