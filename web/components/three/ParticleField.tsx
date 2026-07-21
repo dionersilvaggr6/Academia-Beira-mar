@@ -5,7 +5,11 @@ import { useReducedMotion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { particleCount } from "@/lib/device";
+import { ParticleFallback } from "./ParticleFallback";
 import { buildTargetShapes } from "./particle-shapes";
+
+// Re-exported for back-compat with anything importing the fallback from here.
+export { ParticleFallback };
 
 const SECONDS_PER_SHAPE = 6.5;
 const POINTER_DAMPING = 4;
@@ -99,20 +103,6 @@ function MorphingPoints({ count }: { count: number }) {
         color={FLAME_FALLBACK}
       />
     </points>
-  );
-}
-
-export function ParticleFallback() {
-  return (
-    <div
-      data-particle-fallback
-      aria-hidden
-      className="absolute inset-0 -z-10"
-      style={{
-        background:
-          "radial-gradient(circle at 70% 20%, var(--flame-glow), transparent 55%)",
-      }}
-    />
   );
 }
 
