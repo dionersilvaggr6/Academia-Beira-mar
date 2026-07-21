@@ -2,8 +2,9 @@
 
 Snapshot determinístico. Atualizar a cada mudança de fase/tarefa.
 
-## REDESIGN "Force Dark" — COMPLETO na branch `redesign/force-dark` (2026-07-21)
-- **Estado:** implementação completa, revista (revisão final opus: "merge com fixes" → fixes aplicados) e verificada. **Aguarda decisão do Henrique para push + PR → `main`.**
+## REDESIGN "Force Dark" — PR ABERTO (2026-07-21)
+- **Estado:** implementação completa, revista (revisão final: "merge com fixes" → fixes aplicados), verificada e com **PR aberto**: https://github.com/dionersilvaggr6/Academia-Beira-mar/pull/1 (`redesign/force-dark → main`). Aguarda validação visual (preview Vercel) + merge.
+- **Polish (impeccable):** faixa de números (de-slop), diferenciais (lista editorial), sobre (sem duplicação + foto), mapa escuro, imagens Unsplash. Cobertura 84%, E2E a passar.
 - **SPEC:** docs/superpowers/specs/2026-07-20-beira-mar-redesign-design.md · **Plano:** docs/superpowers/plans/2026-07-20-beira-mar-redesign.md
 - **Feito:** tokens Force Dark (grafite+laranja+glass), Chakra Petch+Inter, hero 3D de partículas (three.js, morph haltere→coração→pin→"BM", fallback WebGL/reduced-motion, pausa off-screen), framer-motion (reduced-motion global), 13 secções redesenhadas, prova social real (5★, +5.700, reviews, Wellhub), copy PT-BR, reskin área aluno/instrutor.
 - **Preservado:** captação de leads (submitLead/Supabase), WhatsApp, planos, RLS — só restyle.
