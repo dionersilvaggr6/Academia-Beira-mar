@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ApagarAlunoButton } from "@/components/instrutor/ApagarAlunoButton";
 import { AplicarModeloForm } from "@/components/instrutor/AplicarModeloForm";
 import { CriarTreinoForm } from "@/components/instrutor/CriarTreinoForm";
 import { TreinoItem } from "@/components/instrutor/TreinoItem";
@@ -77,6 +78,8 @@ export default async function GerirAlunoPage({
           />
         ))}
       </div>
+
+      {aluno && <ApagarAlunoButton alunoId={id} alunoNome={aluno.nome} />}
     </section>
   );
 }
