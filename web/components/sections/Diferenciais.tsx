@@ -7,7 +7,7 @@ import { fadeUp, stagger } from "@/lib/motion";
 
 export function Diferenciais() {
   return (
-    <section id="diferenciais" className="py-20 md:py-28">
+    <section id="diferenciais" className="py-12 md:py-28">
       <Container>
         <motion.div
           initial="hidden"

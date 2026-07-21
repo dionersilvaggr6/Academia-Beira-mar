@@ -3,7 +3,7 @@ import { GlassCard } from "@/components/ui/GlassCard";
 
 export function Wellhub() {
   return (
-    <section id="wellhub" className="py-16">
+    <section id="wellhub" className="py-10 md:py-16">
       <Container>
         <GlassCard className="flex flex-col items-center gap-4 text-center sm:flex-row sm:justify-between sm:text-left">
           <div>

@@ -17,7 +17,7 @@ export function Hero() {
       <Container className="text-center">
         <div className="mx-auto flex max-w-3xl flex-col items-center">
           <Badge className="mb-5">⭐ 5,0 no Google · +5.700 no Instagram</Badge>
-          <h1 className="font-display font-bold text-6xl text-fg uppercase leading-[0.95] md:text-8xl">
+          <h1 className="font-display font-bold text-5xl text-fg uppercase leading-[0.95] sm:text-6xl md:text-8xl">
             Aqui
             <br />
             evoluímos<span className="text-flame">.</span>

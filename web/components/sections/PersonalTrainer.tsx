@@ -8,7 +8,7 @@ const PILARES = ["Segurança", "Eficiência", "Resultados"] as const;
 
 export function PersonalTrainer() {
   return (
-    <section id="personal" className="py-20 md:py-28">
+    <section id="personal" className="py-12 md:py-28">
       <Container>
         <div className="grid items-center gap-10 md:grid-cols-2">
           <div>

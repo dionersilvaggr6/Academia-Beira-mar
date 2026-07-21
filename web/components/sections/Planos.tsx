@@ -27,7 +27,7 @@ export function Planos() {
   );
 
   return (
-    <section id="planos" className="py-20 md:py-28">
+    <section id="planos" className="py-12 md:py-28">
       <Container>
         <motion.div
           initial="hidden"
@@ -77,7 +77,7 @@ export function Planos() {
             initial="hidden"
             animate="show"
             variants={stagger}
-            className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+            className="mt-8 grid grid-cols-1 gap-3 min-[400px]:grid-cols-2 sm:mt-10 sm:gap-4 lg:grid-cols-3"
           >
             {planos.map((plano) => (
               <motion.div key={plano.id} variants={fadeUp}>
