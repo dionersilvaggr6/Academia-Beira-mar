@@ -19,5 +19,40 @@ export const SITE = {
     "Ambiente familiar e acolhedor",
     "Atendimento humanizado",
     "Boa localização",
+    "Climatizada",
+    "Banheiros limpos",
+  ],
+  headline: "Aqui evoluímos.",
+  stats: [
+    { valor: "5★", rotulo: "avaliação no Google" },
+    { valor: "+5.700", rotulo: "seguidores no Instagram" },
+    { valor: "3", rotulo: "modalidades" },
+    { valor: "100%", rotulo: "climatizada & nova" },
+  ],
+  reviews: [
+    {
+      texto:
+        "Academia nova, completa, banheiros limpos, música boa, ótima opção na zona norte.",
+      fonte: "Google",
+    },
+    {
+      texto:
+        "Ambiente acolhedor, profissionais muito competentes e atenciosos!",
+      fonte: "Google",
+    },
+    {
+      texto:
+        "Aparelhos novos, boa localização, estacionamento, ótimo atendimento.",
+      fonte: "Google",
+    },
+  ],
+  flags: { galeria: true, loja: true },
+  store: [
+    "Whey Protein",
+    "Creatina",
+    "Pré-Treino",
+    "Barras de Proteína",
+    "Coqueteleiras",
+    "Energéticos",
   ],
 } as const;

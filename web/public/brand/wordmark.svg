@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 48" role="img" aria-label="Academia Beira Mar">
+  <title>Academia Beira Mar</title>
+  <g transform="translate(0,-8)">
+    <rect x="19" y="29.5" width="26" height="5" rx="2.5" fill="#ff6a2b"/>
+    <rect x="19" y="23" width="6" height="18" rx="2" fill="#f3f3f5"/>
+    <rect x="39" y="23" width="6" height="18" rx="2" fill="#f3f3f5"/>
+    <rect x="11" y="26.5" width="5" height="11" rx="2" fill="#ff6a2b"/>
+    <rect x="48" y="26.5" width="5" height="11" rx="2" fill="#ff6a2b"/>
+  </g>
+  <text x="72" y="32" font-family="'Chakra Petch', system-ui, sans-serif" font-weight="700" font-size="22" letter-spacing="2" fill="#f3f3f5">BEIRA MAR</text>
+</svg>

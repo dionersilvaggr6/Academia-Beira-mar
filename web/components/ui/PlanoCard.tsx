@@ -1,4 +1,8 @@
+import { Badge } from "@/components/ui/Badge";
+import { ButtonLink } from "@/components/ui/Button";
+import { GlassCard } from "@/components/ui/GlassCard";
 import type { Plano } from "@/lib/plans.schema";
+import { cn } from "@/lib/ui/cn";
 import { waLink } from "@/lib/whatsapp";
 
 function precoLabel(p: Plano): string {
@@ -11,26 +15,31 @@ function precoLabel(p: Plano): string {
 
 export function PlanoCard({ plano }: { plano: Plano }) {
   return (
-    <div className="flex flex-col rounded-xl border border-bm-orange/25 bg-bm-orange/[0.04] p-4 backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-bm-orange/40">
-      {plano.destaque && (
-        <span className="mb-1.5 w-fit rounded-full bg-bm-orange px-2 py-0.5 font-bold text-[10px] text-bm-black">
-          MELHOR OFERTA
-        </span>
+    <GlassCard
+      className={cn(
+        "flex h-full flex-col transition hover:-translate-y-1",
+        plano.destaque && "border-flame/50 shadow-[0_0_28px_var(--flame-glow)]",
       )}
-      <h3 className="font-bold text-base text-bm-cream">{plano.nome}</h3>
-      <p className="mt-1 font-extrabold text-bm-orange text-xl">
+    >
+      {plano.destaque && (
+        <Badge className="mb-2 w-fit border-flame/40 bg-flame font-bold text-[10px] text-ink">
+          MELHOR OFERTA
+        </Badge>
+      )}
+      <h3 className="font-display text-fg text-lg uppercase">{plano.nome}</h3>
+      <p className="mt-1 font-display text-2xl text-flame">
         {precoLabel(plano)}
       </p>
-      <p className="text-bm-cream/50 text-xs">{plano.forma}</p>
-      <a
+      <p className="text-fg-dim text-xs">{plano.forma}</p>
+      <ButtonLink
         href={waLink({ plano: plano.nome })}
         target="_blank"
         rel="noopener noreferrer"
         aria-label={`Quero o plano ${plano.nome} — falar no WhatsApp`}
-        className="mt-3 inline-block rounded-lg border border-bm-orange-light/50 bg-bm-orange-light/80 px-3 py-1.5 text-center font-semibold text-bm-black text-sm backdrop-blur-md transition hover:bg-bm-orange-light"
+        className="mt-4 px-3 py-2 text-sm"
       >
-        EU QUERO
-      </a>
-    </div>
+        Eu quero
+      </ButtonLink>
+    </GlassCard>
   );
 }
