@@ -21,6 +21,7 @@ export const metadata: Metadata = {
     description: "Musculação · Pilates · Funcional em Capão da Canoa.",
     type: "website",
   },
+  icons: { icon: "/brand/mark.svg" },
 };
 
 export default function RootLayout({
