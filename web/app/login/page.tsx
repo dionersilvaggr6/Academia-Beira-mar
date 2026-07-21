@@ -22,10 +22,10 @@ export default async function LoginPage({
   return (
     <section className="mx-auto max-w-sm px-4 py-24">
       <h1 className="text-center font-extrabold text-2xl text-fg uppercase">
-        Área do <span className="text-flame">Aluno</span>
+        Área de <span className="text-flame">Treino</span>
       </h1>
       <p className="mt-2 text-center text-fg-dim text-sm">
-        Entre com seu email e senha.
+        Entre com seu email e senha. Alunos e instrutores.
       </p>
       {erro === "convite" && (
         <p role="alert" className="mt-4 text-center text-err text-sm">
