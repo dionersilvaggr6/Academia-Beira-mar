@@ -4,6 +4,10 @@ import { getProfile } from "@/lib/auth/profile";
 
 export const metadata = { title: "Entrar — Academia Beira Mar" };
 
+// Verifica a sessão (Supabase) para redirecionar — sempre dinâmica, nunca
+// pré-renderizada no build.
+export const dynamic = "force-dynamic";
+
 export default async function LoginPage() {
   const profile = await getProfile();
   if (profile) redirect(profile.role === "instrutor" ? "/instrutor" : "/aluno");

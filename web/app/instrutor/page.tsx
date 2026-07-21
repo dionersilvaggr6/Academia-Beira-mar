@@ -6,6 +6,10 @@ import { createClient } from "@/lib/supabase/server";
 
 export const metadata = { title: "Painel do instrutor — Beira Mar" };
 
+// Página autenticada e personalizada — sempre renderizada por pedido (nunca
+// pré-renderizada no build; depende da sessão e do Supabase em runtime).
+export const dynamic = "force-dynamic";
+
 export default async function InstrutorPage() {
   const profile = await requireRole("instrutor");
   const supabase = await createClient();
