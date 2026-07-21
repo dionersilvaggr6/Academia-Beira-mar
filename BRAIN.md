@@ -6,8 +6,8 @@ Contexto rápido de sessão (humano). Estado detalhado em [STATE.md](STATE.md); 
 Plataforma web da Academia Beira Mar, construída por fases. Ver SPEC.
 
 ## Fase atual
-**Fase 1** — Site institucional + Planos + Captação + WhatsApp.
-Estado: SPEC escrita, a aguardar revisão final do Henrique antes do plano de implementação.
+**Redesign "Force Dark"** — COMPLETO na branch `redesign/force-dark` (2026-07-21).
+Rebranding premium: tokens Force Dark, Chakra Petch+Inter, hero 3D de partículas (three.js), framer-motion, 13 secções, prova social real, copy PT-BR, reskin da área de aluno. Leads/WhatsApp/planos preservados. 71 testes verdes, build verde, verificado ao vivo. Aguarda decisão do Henrique para push + PR → main. (Fase 1 já estava no ar; Fase 2A desenhada.)
 
 ## Decisões-chave
 - Faseamento: F1 site/planos/captação · F2 área de aluno · F3 loja click&collect.
@@ -23,4 +23,5 @@ Estado: SPEC escrita, a aguardar revisão final do Henrique antes do plano de im
 - 10 planos (ver SPEC §5). Referência de estrutura: 26fit.com.br.
 
 ## Próximo passo
-Henrique revê a SPEC → invocar `writing-plans` → plano de implementação → código (TDD).
+Henrique vê o redesign (localhost:3001) → decide push + PR `redesign/force-dark → main`.
+Depois: gerar/colocar imagens (fal.ia ou fotos reais), E2E+Lighthouse, deploy.

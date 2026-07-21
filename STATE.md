@@ -2,6 +2,15 @@
 
 Snapshot determinístico. Atualizar a cada mudança de fase/tarefa.
 
+## REDESIGN "Force Dark" — COMPLETO na branch `redesign/force-dark` (2026-07-21)
+- **Estado:** implementação completa, revista (revisão final opus: "merge com fixes" → fixes aplicados) e verificada. **Aguarda decisão do Henrique para push + PR → `main`.**
+- **SPEC:** docs/superpowers/specs/2026-07-20-beira-mar-redesign-design.md · **Plano:** docs/superpowers/plans/2026-07-20-beira-mar-redesign.md
+- **Feito:** tokens Force Dark (grafite+laranja+glass), Chakra Petch+Inter, hero 3D de partículas (three.js, morph haltere→coração→pin→"BM", fallback WebGL/reduced-motion, pausa off-screen), framer-motion (reduced-motion global), 13 secções redesenhadas, prova social real (5★, +5.700, reviews, Wellhub), copy PT-BR, reskin área aluno/instrutor.
+- **Preservado:** captação de leads (submitLead/Supabase), WhatsApp, planos, RLS — só restyle.
+- **Qualidade:** 71 testes verdes · Biome verde · tsc verde · build verde · 0 erros de consola · a11y spot-check limpo. Verificado ao vivo em localhost:3001.
+- **Saltado (decisão do Henrique):** geração de imagens fal.ia — Modalidades/Galeria usam fundos-gradiente; `/generated/*.webp` a gerar depois ou substituir por fotos reais.
+- **Pendente antes de produção:** push+PR (a pedido) · gerar/colocar imagens reais · E2E Playwright + Lighthouse (passo manual) · nota Next 16: `middleware`→`proxy` (deprecação).
+
 ## Fase
 - **Atual:** Fase 1 — **COMPLETA e integrada na `main`** (2026-07-19)
 - **Etapa do método:** todos os passos CM fechados (SPEC→plano→código→revisões→verificação→merge)
