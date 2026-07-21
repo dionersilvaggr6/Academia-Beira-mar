@@ -104,9 +104,20 @@ export async function recuperarSenha(
     const headersList = await headers();
     const origin = resolveOrigin(headersList, process.env.NEXT_PUBLIC_SITE_URL);
     const supabase = await createClient();
-    await supabase.auth.resetPasswordForEmail(parsed.data.email, {
-      redirectTo: `${origin}/definir-senha`,
-    });
+    // O SDK devolve o erro no objeto (não lança), por isso tem de ser
+    // inspecionado — caso contrário falhas reais (ex.: limite de emails do
+    // Supabase) passam despercebidas. Ao utilizador continuamos a devolver
+    // sempre a mesma resposta neutra, para não revelar se o email existe.
+    const { error } = await supabase.auth.resetPasswordForEmail(
+      parsed.data.email,
+      { redirectTo: `${origin}/definir-senha` },
+    );
+    if (error) {
+      console.error(
+        "[recuperarSenha] Supabase recusou o pedido:",
+        error.message,
+      );
+    }
   } catch (err) {
     console.error(
       "[recuperarSenha] falha ao solicitar recuperação:",
