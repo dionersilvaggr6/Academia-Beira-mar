@@ -6,7 +6,7 @@ export function Stats() {
   return (
     <section
       id="numeros"
-      className="border-white/5 border-y bg-surface/30 py-12 md:py-16"
+      className="border-white/5 border-y bg-surface/30 py-8 md:py-16"
     >
       <Container>
         <div className="grid grid-cols-2 gap-y-10 md:grid-cols-4 md:gap-y-0 md:divide-x md:divide-white/10">

@@ -53,7 +53,7 @@ export function Galeria() {
   const active = openIndex === null ? null : GALLERY_IMAGES[openIndex];
 
   return (
-    <section id="galeria" className="py-20 md:py-28">
+    <section id="galeria" className="py-12 md:py-28">
       <Container>
         <h2 className="text-center font-display text-3xl text-fg uppercase md:text-4xl">
           Galeria

@@ -7,7 +7,7 @@ const MAP_SRC = `https://www.google.com/maps?q=${encodeURIComponent(MAP_QUERY)}&
 
 export function Localizacao() {
   return (
-    <section id="localizacao" className="py-20 md:py-28">
+    <section id="localizacao" className="py-12 md:py-28">
       <Container>
         <h2 className="text-center font-display text-3xl text-fg uppercase md:text-4xl">
           Onde estamos

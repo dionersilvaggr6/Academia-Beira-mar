@@ -50,7 +50,7 @@ export function Depoimentos() {
   if (!current) return null;
 
   return (
-    <section id="depoimentos" className="py-20 md:py-28">
+    <section id="depoimentos" className="py-12 md:py-28">
       <Container>
         <h2 className="text-center font-display text-3xl text-fg uppercase md:text-4xl">
           O que dizem de nós

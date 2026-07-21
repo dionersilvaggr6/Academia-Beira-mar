@@ -9,7 +9,7 @@ export function LojaTeaser() {
   if (!SITE.flags.loja) return null;
 
   return (
-    <section id="loja" className="py-20 md:py-28">
+    <section id="loja" className="py-12 md:py-28">
       <Container>
         <GlassCard className="flex flex-col gap-6">
           <div>

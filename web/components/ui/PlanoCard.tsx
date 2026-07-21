@@ -16,18 +16,21 @@ function precoLabel(p: Plano): string {
 export function PlanoCard({ plano }: { plano: Plano }) {
   return (
     <GlassCard
+      padding="p-4 md:p-6"
       className={cn(
         "flex h-full flex-col transition hover:-translate-y-1",
         plano.destaque && "border-flame/50 shadow-[0_0_28px_var(--flame-glow)]",
       )}
     >
       {plano.destaque && (
-        <Badge className="mb-2 w-fit border-flame/40 bg-flame font-bold text-[10px] text-ink">
+        <Badge className="mb-1.5 w-fit border-flame/40 bg-flame font-bold text-[10px] text-ink md:mb-2">
           MELHOR OFERTA
         </Badge>
       )}
-      <h3 className="font-display text-fg text-lg uppercase">{plano.nome}</h3>
-      <p className="mt-1 font-display text-2xl text-flame">
+      <h3 className="font-display text-base text-fg uppercase md:text-lg">
+        {plano.nome}
+      </h3>
+      <p className="mt-1 font-display text-flame text-xl md:text-2xl">
         {precoLabel(plano)}
       </p>
       <p className="text-fg-dim text-xs">{plano.forma}</p>
@@ -36,7 +39,8 @@ export function PlanoCard({ plano }: { plano: Plano }) {
         target="_blank"
         rel="noopener noreferrer"
         aria-label={`Quero o plano ${plano.nome} — falar no WhatsApp`}
-        className="mt-4 px-3 py-2 text-sm"
+        size="compact"
+        className="mt-3 md:mt-4"
       >
         Eu quero
       </ButtonLink>

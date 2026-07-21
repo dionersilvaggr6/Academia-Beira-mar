@@ -5,7 +5,7 @@ import { SOBRE_IMG } from "@/lib/images";
 
 export function Sobre() {
   return (
-    <section id="sobre" className="py-20 md:py-28">
+    <section id="sobre" className="py-12 md:py-28">
       <Container className="grid gap-10 md:grid-cols-2 md:items-center md:gap-14">
         <div>
           <h2 className="font-display text-3xl text-fg uppercase md:text-4xl">

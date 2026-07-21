@@ -32,7 +32,7 @@ const MODALIDADES: readonly Modalidade[] = [
 
 export function Modalidades() {
   return (
-    <section id="modalidades" className="py-20 md:py-28">
+    <section id="modalidades" className="py-12 md:py-28">
       <Container>
         <motion.div
           initial="hidden"
