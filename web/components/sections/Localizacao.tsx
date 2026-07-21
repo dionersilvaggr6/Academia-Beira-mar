@@ -1,42 +1,60 @@
-import { SectionTitle } from "@/components/ui/SectionTitle";
+import { Container } from "@/components/ui/Container";
+import { GlassCard } from "@/components/ui/GlassCard";
 import { SITE } from "@/content/site";
 
-const MAP_SRC =
-  "https://www.google.com/maps?q=Academia+Beira+Mar+Av+Paraguassu+78+Cap%C3%A3o+da+Canoa&output=embed";
+const MAP_QUERY = "Av. Paraguassu, 78, Jardim Beira Mar, Capão da Canoa - RS";
+const MAP_SRC = `https://www.google.com/maps?q=${encodeURIComponent(MAP_QUERY)}&output=embed`;
 
 export function Localizacao() {
   return (
-    <section id="localizacao" className="mx-auto max-w-6xl px-4 py-20">
-      <SectionTitle>Onde estamos</SectionTitle>
-      <div className="mt-10 grid gap-8 md:grid-cols-2">
-        <div>
-          <h3 className="font-bold text-bm-orange text-lg">Endereço</h3>
-          <p className="mt-1 text-bm-cream/85">{SITE.address}</p>
-          <p className="text-bm-cream/85">{SITE.city}</p>
+    <section id="localizacao" className="py-20 md:py-28">
+      <Container>
+        <h2 className="text-center font-display text-3xl text-fg uppercase md:text-4xl">
+          Onde estamos
+        </h2>
 
-          <h3 className="mt-6 font-bold text-bm-orange text-lg">Horário</h3>
-          <ul className="mt-1 space-y-1">
-            {SITE.hours.map((h) => (
-              <li
-                key={h.dias}
-                className="flex justify-between gap-4 text-bm-cream/85"
-              >
-                <span>{h.dias}</span>
-                <span className="font-medium">{h.horas}</span>
-              </li>
-            ))}
-          </ul>
+        <div className="mt-12 grid gap-8 md:grid-cols-2">
+          <GlassCard>
+            <h3 className="font-display text-flame text-lg uppercase">
+              Endereço
+            </h3>
+            <p className="mt-2 font-sans text-fg-dim">{SITE.address}</p>
+            <p className="font-sans text-fg-dim">{SITE.city}</p>
+
+            <h3 className="mt-6 font-display text-flame text-lg uppercase">
+              Horário
+            </h3>
+            <ul className="mt-2 space-y-1">
+              {SITE.hours.map((h) => (
+                <li
+                  key={h.dias}
+                  className="flex justify-between gap-4 font-sans text-fg-dim text-sm"
+                >
+                  <span>{h.dias}</span>
+                  <span className="font-medium text-fg">{h.horas}</span>
+                </li>
+              ))}
+            </ul>
+
+            <p className="mt-6 font-sans text-fg-mute text-xs">
+              Mais movimentado por volta das 20h.
+            </p>
+          </GlassCard>
+
+          <div
+            className="overflow-hidden rounded-xl border"
+            style={{ borderColor: "var(--glass-border)" }}
+          >
+            <iframe
+              title="Mapa — Academia Beira Mar"
+              src={MAP_SRC}
+              className="h-80 w-full md:h-full"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
         </div>
-        <div className="overflow-hidden rounded-2xl border border-white/10">
-          <iframe
-            title="Mapa Academia Beira Mar"
-            src={MAP_SRC}
-            className="h-72 w-full"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          />
-        </div>
-      </div>
+      </Container>
     </section>
   );
 }

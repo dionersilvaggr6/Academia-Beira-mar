@@ -2,12 +2,14 @@
 
 import { useActionState } from "react";
 import { type LeadResult, submitLead } from "@/app/actions/submit-lead";
-import { SectionTitle } from "@/components/ui/SectionTitle";
+import { Button } from "@/components/ui/Button";
+import { Container } from "@/components/ui/Container";
+import { GlassCard } from "@/components/ui/GlassCard";
 import { SITE } from "@/content/site";
 import { waLink } from "@/lib/whatsapp";
 
 const inputClass =
-  "w-full rounded-lg border border-white/10 bg-white/5 p-3 text-bm-cream placeholder:text-bm-cream/40 focus:border-bm-orange focus:outline-none";
+  "w-full rounded-lg border border-white/10 bg-white/5 p-3 font-sans text-fg placeholder:text-fg-mute focus:border-flame focus:outline-none";
 
 export function Contacto() {
   const [state, action, pending] = useActionState<LeadResult | null, FormData>(
@@ -16,86 +18,88 @@ export function Contacto() {
   );
 
   return (
-    <section id="contacto" className="mx-auto max-w-lg px-4 py-20">
-      <SectionTitle>Fala connosco</SectionTitle>
+    <section id="contacto" className="py-20 md:py-28">
+      <Container className="max-w-lg">
+        <h2 className="text-center font-display text-3xl text-fg uppercase md:text-4xl">
+          Fala connosco
+        </h2>
 
-      {state?.ok ? (
-        <p
-          role="status"
-          aria-live="polite"
-          className="mt-8 rounded-lg border border-green-500/40 bg-green-500/10 p-4 text-center text-bm-cream"
-        >
-          Recebemos o teu contacto! Em breve falamos contigo. 💪
-        </p>
-      ) : (
-        <form action={action} className="mt-8 space-y-4">
-          <div>
-            <label htmlFor="nome" className="sr-only">
-              Nome
-            </label>
-            <input
-              id="nome"
-              name="nome"
-              required
-              placeholder="O teu nome"
-              className={inputClass}
-            />
-          </div>
-
-          <div>
-            <label htmlFor="telefone" className="sr-only">
-              Telefone ou WhatsApp
-            </label>
-            <input
-              id="telefone"
-              name="telefone"
-              required
-              inputMode="tel"
-              placeholder="Telefone / WhatsApp"
-              className={inputClass}
-            />
-          </div>
-
-          <div>
-            <label htmlFor="interesse" className="sr-only">
-              Plano ou modalidade de interesse
-            </label>
-            <input
-              id="interesse"
-              name="interesse"
-              placeholder="Plano ou modalidade (opcional)"
-              className={inputClass}
-            />
-          </div>
-
-          {state && !state.ok && (
+        <GlassCard className="mt-10">
+          {state?.ok ? (
             <p
-              role="alert"
-              aria-live="assertive"
-              className="text-red-400 text-sm"
+              role="status"
+              aria-live="polite"
+              className="rounded-lg border border-ok/40 bg-ok/10 p-4 text-center font-sans text-fg"
             >
-              {state.error}
+              Recebemos o teu contacto! Em breve falamos contigo. 💪
             </p>
+          ) : (
+            <form action={action} className="space-y-4">
+              <div>
+                <label htmlFor="nome" className="sr-only">
+                  Nome
+                </label>
+                <input
+                  id="nome"
+                  name="nome"
+                  required
+                  placeholder="O teu nome"
+                  className={inputClass}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="telefone" className="sr-only">
+                  Telefone ou WhatsApp
+                </label>
+                <input
+                  id="telefone"
+                  name="telefone"
+                  required
+                  inputMode="tel"
+                  placeholder="Telefone / WhatsApp"
+                  className={inputClass}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="interesse" className="sr-only">
+                  Plano ou modalidade de interesse
+                </label>
+                <input
+                  id="interesse"
+                  name="interesse"
+                  placeholder="Plano ou modalidade (opcional)"
+                  className={inputClass}
+                />
+              </div>
+
+              {state && !state.ok && (
+                <p
+                  role="alert"
+                  aria-live="assertive"
+                  className="font-sans text-err text-sm"
+                >
+                  {state.error}
+                </p>
+              )}
+
+              <Button type="submit" disabled={pending} className="w-full">
+                {pending ? "A enviar…" : "Quero começar"}
+              </Button>
+
+              <a
+                href={waLink()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-center font-sans text-flame text-sm"
+              >
+                ou fala connosco no WhatsApp {SITE.whatsappDisplay}
+              </a>
+            </form>
           )}
-
-          <button
-            type="submit"
-            disabled={pending}
-            className="w-full rounded-lg bg-bm-orange p-3 font-bold text-bm-black transition hover:brightness-110 disabled:opacity-60"
-          >
-            {pending ? "A enviar…" : "Quero começar"}
-          </button>
-
-          <a
-            href={waLink()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block text-center text-bm-orange text-sm"
-          >
-            ou fala connosco no WhatsApp {SITE.whatsappDisplay}
-          </a>
-        </form>
-      )}
+        </GlassCard>
+      </Container>
     </section>
   );
 }
