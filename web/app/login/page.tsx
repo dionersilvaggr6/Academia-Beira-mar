@@ -10,10 +10,10 @@ export default async function LoginPage() {
 
   return (
     <section className="mx-auto max-w-sm px-4 py-24">
-      <h1 className="text-center font-extrabold text-2xl text-bm-cream uppercase">
-        Área do <span className="text-bm-orange">Aluno</span>
+      <h1 className="text-center font-extrabold text-2xl text-fg uppercase">
+        Área do <span className="text-flame">Aluno</span>
       </h1>
-      <p className="mt-2 text-center text-bm-cream/60 text-sm">
+      <p className="mt-2 text-center text-fg-dim text-sm">
         Entra com o teu email e senha.
       </p>
       <LoginForm />

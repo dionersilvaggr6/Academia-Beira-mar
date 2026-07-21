@@ -4,7 +4,7 @@ import { useActionState } from "react";
 import { type ActionResult, criarExercicio } from "@/app/actions/treinos";
 
 const input =
-  "rounded-lg border border-white/10 bg-white/5 p-2 text-bm-cream text-sm placeholder:text-bm-cream/40 focus:border-bm-orange focus:outline-none";
+  "rounded-lg border border-white/10 bg-white/5 p-2 text-fg text-sm placeholder:text-fg-dim focus:border-flame focus:outline-none";
 
 export function CriarExercicioForm({ treinoId }: { treinoId: string }) {
   const [state, action, pending] = useActionState<
@@ -47,7 +47,7 @@ export function CriarExercicioForm({ treinoId }: { treinoId: string }) {
       <button
         type="submit"
         disabled={pending}
-        className="rounded-lg bg-bm-orange px-3 py-2 font-semibold text-bm-black text-sm transition hover:brightness-110 disabled:opacity-60"
+        className="rounded-lg bg-flame px-3 py-2 font-semibold text-ink text-sm transition hover:brightness-110 disabled:opacity-60"
       >
         {pending ? "…" : "+ Exercício"}
       </button>

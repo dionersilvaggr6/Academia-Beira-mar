@@ -18,7 +18,7 @@ export default async function InstrutorPage() {
   return (
     <section className="mx-auto max-w-3xl px-4 py-16">
       <header className="flex items-center justify-between">
-        <h1 className="font-extrabold text-2xl text-bm-cream uppercase">
+        <h1 className="font-extrabold text-2xl text-fg uppercase">
           Painel — {profile.nome}
         </h1>
         <LogoutButton />
@@ -26,18 +26,18 @@ export default async function InstrutorPage() {
 
       <div className="mt-8 grid gap-6 md:grid-cols-2">
         <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
-          <h2 className="font-bold text-bm-cream">Novo aluno</h2>
+          <h2 className="font-bold text-fg">Novo aluno</h2>
           <ConvidarForm role="aluno" label="Convidar aluno" />
         </div>
         <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
-          <h2 className="font-bold text-bm-cream">Novo instrutor</h2>
+          <h2 className="font-bold text-fg">Novo instrutor</h2>
           <ConvidarForm role="instrutor" label="Convidar instrutor" />
         </div>
       </div>
 
-      <h2 className="mt-10 font-bold text-bm-orange">Alunos</h2>
+      <h2 className="mt-10 font-bold text-flame">Alunos</h2>
       {!alunos || alunos.length === 0 ? (
-        <p className="mt-2 text-bm-cream/60">
+        <p className="mt-2 text-fg-dim">
           Ainda não há alunos. Convida o primeiro acima.
         </p>
       ) : (
@@ -46,7 +46,7 @@ export default async function InstrutorPage() {
             <Link
               key={a.id}
               href={`/instrutor/aluno/${a.id}`}
-              className="rounded-lg border border-white/10 bg-white/[0.03] p-3 text-bm-cream transition hover:border-bm-orange/40"
+              className="rounded-lg border border-white/10 bg-white/[0.03] p-3 text-fg transition hover:border-flame/40"
             >
               {a.nome}
             </Link>

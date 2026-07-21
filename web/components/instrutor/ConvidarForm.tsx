@@ -4,7 +4,7 @@ import { useActionState } from "react";
 import { type ActionResult, convidarPessoa } from "@/app/actions/pessoas";
 
 const input =
-  "w-full rounded-lg border border-white/10 bg-white/5 p-2 text-bm-cream text-sm placeholder:text-bm-cream/40 focus:border-bm-orange focus:outline-none";
+  "w-full rounded-lg border border-white/10 bg-white/5 p-2 text-fg text-sm placeholder:text-fg-dim focus:border-flame focus:outline-none";
 
 export function ConvidarForm({
   role,
@@ -49,7 +49,7 @@ export function ConvidarForm({
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-lg bg-bm-orange p-2 font-semibold text-bm-black text-sm transition hover:brightness-110 disabled:opacity-60"
+        className="w-full rounded-lg bg-flame p-2 font-semibold text-ink text-sm transition hover:brightness-110 disabled:opacity-60"
       >
         {pending ? "A convidar…" : label}
       </button>

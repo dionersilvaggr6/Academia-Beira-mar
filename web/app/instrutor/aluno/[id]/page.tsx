@@ -46,15 +46,15 @@ export default async function GerirAlunoPage({
 
   return (
     <section className="mx-auto max-w-3xl px-4 py-16">
-      <Link href="/instrutor" className="text-bm-orange text-sm">
+      <Link href="/instrutor" className="text-flame text-sm">
         ← Voltar
       </Link>
-      <h1 className="mt-2 font-extrabold text-2xl text-bm-cream">
+      <h1 className="mt-2 font-extrabold text-2xl text-fg">
         Treinos de {aluno?.nome ?? "aluno"}
       </h1>
 
       <div className="mt-6 rounded-xl border border-white/10 bg-white/[0.03] p-4">
-        <h2 className="font-bold text-bm-cream">Nova divisão</h2>
+        <h2 className="font-bold text-fg">Nova divisão</h2>
         <CriarTreinoForm alunoId={id} />
       </div>
 
@@ -62,9 +62,9 @@ export default async function GerirAlunoPage({
         {(treinos ?? []).map((t) => (
           <div
             key={t.id}
-            className="rounded-xl border border-bm-orange/25 bg-white/[0.03] p-4"
+            className="rounded-xl border border-flame/25 bg-white/[0.03] p-4"
           >
-            <p className="font-bold text-bm-cream">
+            <p className="font-bold text-fg">
               {t.nome}
               {t.foco ? ` — ${t.foco}` : ""}
             </p>
@@ -72,7 +72,7 @@ export default async function GerirAlunoPage({
               {exs
                 .filter((e) => e.treino_id === t.id)
                 .map((e) => (
-                  <li key={e.id} className="text-bm-cream/80 text-sm">
+                  <li key={e.id} className="text-fg-dim text-sm">
                     {e.nome} — {e.series}×{e.repeticoes}
                     {e.carga ? ` · ${e.carga}` : ""}
                   </li>
