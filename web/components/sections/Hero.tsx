@@ -1,4 +1,3 @@
-import { ParticleFieldLazy } from "@/components/three/ParticleFieldLazy";
 import { Badge } from "@/components/ui/Badge";
 import { ButtonLink } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
@@ -11,7 +10,9 @@ export function Hero() {
       id="inicio"
       className="relative flex min-h-[92vh] items-center overflow-hidden pt-20"
     >
-      <ParticleFieldLazy />
+      {/* O campo de partículas 3D agora é montado uma única vez em
+          app/layout.tsx como fundo global; aqui fica só o overlay de
+          gradiente que garante legibilidade do headline. */}
       <div className="-z-10 absolute inset-0 bg-gradient-to-b from-transparent via-ink/40 to-ink" />
       <Container className="text-center">
         <div className="mx-auto flex max-w-3xl flex-col items-center">

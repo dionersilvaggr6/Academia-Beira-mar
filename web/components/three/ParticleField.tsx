@@ -124,32 +124,32 @@ export default function ParticleField() {
   const reduced = useReducedMotion();
   const [count, setCount] = useState(0);
   const [webglSupported, setWebglSupported] = useState(true);
-  const [visible, setVisible] = useState(true);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(
+    () => typeof document === "undefined" || !document.hidden,
+  );
 
   useEffect(() => {
     setCount(particleCount(window.innerWidth, !!reduced));
     setWebglSupported(hasWebGL());
   }, [reduced]);
 
-  // Pause the render loop whenever the hero scrolls out of view. The
-  // container div is always mounted (see below), so this ref never goes
-  // stale across the reduced/webgl/count state transitions above.
+  // Now mounted as a fixed, full-viewport background (see app/layout.tsx),
+  // so it's always "in view" — an IntersectionObserver on its container
+  // would never fire. Pause the render loop instead when the browser tab
+  // itself is hidden (background tab), resuming when it's visible again,
+  // to keep battery/CPU usage in check now that this runs on every page.
   useEffect(() => {
-    const node = containerRef.current;
-    if (!node || typeof IntersectionObserver === "undefined") return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setVisible(entry?.isIntersecting ?? true),
-      { threshold: 0 },
-    );
-    observer.observe(node);
-    return () => observer.disconnect();
+    if (typeof document === "undefined") return;
+    const onVisibilityChange = () => setVisible(!document.hidden);
+    document.addEventListener("visibilitychange", onVisibilityChange);
+    return () =>
+      document.removeEventListener("visibilitychange", onVisibilityChange);
   }, []);
 
   const showCanvas = !reduced && count > 0 && webglSupported;
 
   return (
-    <div ref={containerRef} className="absolute inset-0 -z-10" aria-hidden>
+    <div className="absolute inset-0 -z-10" aria-hidden>
       {showCanvas ? (
         <CanvasBoundary>
           <Canvas
@@ -157,6 +157,13 @@ export default function ParticleField() {
             dpr={[1, 2]}
             gl={{ antialias: true, alpha: true }}
             frameloop={visible ? "always" : "never"}
+            // react-three-fiber's own wrapper div defaults to
+            // `pointer-events: auto` (so raycasting/orbit-style controls
+            // work out of the box). This field is a decorative background
+            // now mounted globally — it must never intercept clicks, so
+            // force it off here rather than rely on inheritance from an
+            // ancestor (this inline style otherwise wins).
+            style={{ pointerEvents: "none" }}
           >
             <MorphingPoints count={count} />
           </Canvas>

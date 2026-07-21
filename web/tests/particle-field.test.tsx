@@ -86,8 +86,8 @@ describe("ParticleField (error boundary)", () => {
   });
 });
 
-describe("ParticleField (pause when off-screen)", () => {
-  it("seta frameloop='never' quando o container sai do viewport", async () => {
+describe("ParticleField (pause when tab is hidden)", () => {
+  it("seta frameloop='never' quando document.hidden fica true, e volta a 'always' quando a aba reaparece", async () => {
     vi.resetModules();
     vi.doMock("framer-motion", () => ({ useReducedMotion: () => false }));
 
@@ -102,21 +102,9 @@ describe("ParticleField (pause when off-screen)", () => {
     vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(
       {} as unknown as RenderingContext,
     );
-
-    let observerCallback: IntersectionObserverCallback = () => undefined;
-    class FakeIntersectionObserver {
-      observe = vi.fn();
-      disconnect = vi.fn();
-      unobserve = vi.fn();
-      takeRecords = () => [];
-      root = null;
-      rootMargin = "";
-      thresholds: number[] = [];
-      constructor(callback: IntersectionObserverCallback) {
-        observerCallback = callback;
-      }
-    }
-    vi.stubGlobal("IntersectionObserver", FakeIntersectionObserver);
+    const hiddenSpy = vi
+      .spyOn(document, "hidden", "get")
+      .mockReturnValue(false);
 
     const { default: ParticleField } = await import(
       "@/components/three/ParticleField"
@@ -125,15 +113,18 @@ describe("ParticleField (pause when off-screen)", () => {
 
     expect(capturedProps.frameloop).toBe("always");
 
+    hiddenSpy.mockReturnValue(true);
     act(() => {
-      observerCallback(
-        [{ isIntersecting: false } as IntersectionObserverEntry],
-        new FakeIntersectionObserver(
-          () => undefined,
-        ) as unknown as IntersectionObserver,
-      );
+      document.dispatchEvent(new Event("visibilitychange"));
     });
 
     expect(capturedProps.frameloop).toBe("never");
+
+    hiddenSpy.mockReturnValue(false);
+    act(() => {
+      document.dispatchEvent(new Event("visibilitychange"));
+    });
+
+    expect(capturedProps.frameloop).toBe("always");
   });
 });

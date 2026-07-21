@@ -1,13 +1,11 @@
 /// <reference types="vitest" />
 
 import { render, screen } from "@testing-library/react";
-import { vi } from "vitest";
 import { Hero } from "@/components/sections/Hero";
 
-// Mock the ParticleFieldLazy component so it doesn't try to mount WebGL
-vi.mock("@/components/three/ParticleFieldLazy", () => ({
-  ParticleFieldLazy: () => <div data-testid="particle-field" />,
-}));
+// Hero no longer mounts ParticleFieldLazy directly — the 3D particle field
+// is now a single global background mounted in app/layout.tsx — so no mock
+// for it is needed here anymore.
 
 describe("Hero", () => {
   it("renders headline with 'evoluímos' text", () => {
