@@ -4,16 +4,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Container } from "@/components/ui/Container";
 import { SITE } from "@/content/site";
-
-type GalleryImage = { src: string; alt: string };
-
-const GALLERY_IMAGES: readonly GalleryImage[] = Array.from(
-  { length: 6 },
-  (_, index) => ({
-    src: `/generated/gallery-${index + 1}.webp`,
-    alt: `Foto ${index + 1} da Academia Beira Mar`,
-  }),
-);
+import { GALLERY as GALLERY_IMAGES } from "@/lib/images";
 
 export function Galeria() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);

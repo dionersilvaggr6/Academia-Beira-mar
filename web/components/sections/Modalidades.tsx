@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Container } from "@/components/ui/Container";
+import { MODALIDADE_IMG } from "@/lib/images";
 import { fadeUp, stagger } from "@/lib/motion";
 
 type Modalidade = {
@@ -56,11 +57,11 @@ export function Modalidades() {
                 className="group relative aspect-[4/5] overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-surface-2 via-surface to-ink transition-colors duration-300 hover:border-flame/50"
               >
                 <Image
-                  src={`/generated/modalidade-${m.slug}.webp`}
+                  src={MODALIDADE_IMG[m.slug] ?? ""}
                   alt={`Treino de ${m.nome} na Academia Beira Mar`}
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="object-cover opacity-90 transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/30 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 p-6">
