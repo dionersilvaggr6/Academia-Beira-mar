@@ -10,10 +10,11 @@ describe("Sobre", () => {
     expect(screen.getByText(/Capão da Canoa/i)).toBeInTheDocument();
   });
 
-  it("renders every SITE.diferenciais item", () => {
+  it("renders the section heading and the academy image", () => {
     render(<Sobre />);
-    for (const item of SITE.diferenciais) {
-      expect(screen.getByText(item)).toBeInTheDocument();
-    }
+    expect(
+      screen.getByRole("heading", { name: /Sobre nós/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByAltText(/Academia Beira Mar/i)).toBeInTheDocument();
   });
 });

@@ -10,6 +10,9 @@ export const MODALIDADE_IMG: Record<string, string> = {
   funcional: u("1534438327276-14e5300c3a48"),
 };
 
+// Foto de ambiente para a secção "Sobre".
+export const SOBRE_IMG = u("1571902943202-507ec2618e8f", 1400);
+
 type GalleryImage = { src: string; alt: string };
 
 export const GALLERY: readonly GalleryImage[] = [

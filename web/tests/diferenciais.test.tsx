@@ -33,6 +33,18 @@ vi.mock("framer-motion", () => {
       }: { children?: React.ReactNode } & Record<string, unknown>) => (
         <h2 {...stripMotionProps(props)}>{children}</h2>
       ),
+      ul: ({
+        children,
+        ...props
+      }: { children?: React.ReactNode } & Record<string, unknown>) => (
+        <ul {...stripMotionProps(props)}>{children}</ul>
+      ),
+      li: ({
+        children,
+        ...props
+      }: { children?: React.ReactNode } & Record<string, unknown>) => (
+        <li {...stripMotionProps(props)}>{children}</li>
+      ),
     },
   };
 });
