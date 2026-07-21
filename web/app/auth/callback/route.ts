@@ -3,13 +3,16 @@ import { type NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
 /**
- * Callback de autenticação (convites, magic links, recuperação de senha).
+ * Callback de autenticação (recuperação de senha, magic link, e futuro
+ * OAuth/PKCE).
  *
- * O link de convite do Supabase (`inviteUserByEmail`) não suporta PKCE — o
- * browser que aceita o convite nunca é o mesmo que o enviou, então o GoTrue
- * envia `token_hash` + `type` (fluxo OTP), não `code`. Tratamos os dois casos
- * aqui: `token_hash` (convites, magic link, recuperação) e `code` (OAuth/PKCE,
- * caso venha a ser usado no futuro).
+ * NÃO trata convites: `inviteUserByEmail` usa o fluxo implícito do Supabase
+ * e devolve `access_token`/`refresh_token` no fragmento da URL
+ * (`#access_token=...`), que nunca chega ao servidor — por isso o convite
+ * aponta direto para `/definir-senha`, que consome a hash no cliente (ver
+ * `lib/auth/hash-tokens.ts` e `DefinirSenhaGate`). Aqui tratamos só
+ * `token_hash` + `type` (fluxo OTP: recuperação, magic link) e `code`
+ * (OAuth/PKCE).
  */
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Chakra_Petch, Inter } from "next/font/google";
+import { InviteHashRedirect } from "@/components/auth/InviteHashRedirect";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { WhatsappFab } from "@/components/layout/WhatsappFab";
@@ -34,6 +35,7 @@ export default function RootLayout({
       className={`${chakra.variable} ${inter.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-ink text-fg">
+        <InviteHashRedirect />
         <MotionProvider>
           <Header />
           <main className="flex-1">{children}</main>

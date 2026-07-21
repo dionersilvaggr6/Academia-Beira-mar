@@ -37,7 +37,7 @@ export async function convidarPessoa(
 
     const { data, error } = await admin.auth.admin.inviteUserByEmail(email, {
       data: { nome, role },
-      redirectTo: `${origin}/auth/callback?next=/definir-senha`,
+      redirectTo: `${origin}/definir-senha`,
     });
     if (error) throw error;
 
