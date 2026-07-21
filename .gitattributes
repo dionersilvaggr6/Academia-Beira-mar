@@ -1,0 +1,16 @@
+# Normaliza fins de linha: o repositório guarda sempre LF.
+#
+# Sem isto, com `core.autocrlf=true` no Windows, os ficheiros ficavam CRLF na
+# árvore de trabalho e o Biome passava a acusar ~100 ficheiros por formatação,
+# deixando o `npm run lint` vermelho e mascarando erros reais.
+* text=auto eol=lf
+
+# Binários — nunca converter.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.woff binary
+*.woff2 binary
