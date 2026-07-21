@@ -2,12 +2,14 @@
 
 Snapshot determinístico. Atualizar a cada mudança de fase/tarefa.
 
-## REDESIGN "Force Dark" — PR ABERTO (2026-07-21)
-- **Estado:** implementação completa, revista (revisão final: "merge com fixes" → fixes aplicados), verificada e com **PR aberto**: https://github.com/dionersilvaggr6/Academia-Beira-mar/pull/1 (`redesign/force-dark → main`). Aguarda validação visual (preview Vercel) + merge.
-- **Polish (impeccable):** faixa de números (de-slop), diferenciais (lista editorial), sobre (sem duplicação + foto), mapa escuro, imagens Unsplash. Cobertura 84%, E2E a passar.
-- **Preview Vercel (build VERDE):** https://academia-beira-mar-git-redesign-force-dark-claude-projetos.vercel.app (protegido por SSO Vercel — abrir com sessão na conta). Validar aqui: fotos, mapa escuro, mobile.
-- **Fix de deploy:** `/login`, `/aluno`, `/instrutor` marcadas `force-dynamic` — o build da Vercel falhava a pré-renderizá-las por **faltarem as env vars do Supabase na Vercel** (pendente da Fase 2A, não do redesign). Homepage (redesign) deploya independentemente.
-- **⚠️ Ação do Henrique p/ a área de aluno funcionar em prod/preview:** adicionar na Vercel (Settings → Environment Variables) as 3 vars do Supabase (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` — valores no `.env.local`). Sem elas, `/login` e `/aluno` dão erro em runtime (a homepage do redesign funciona na mesma).
+## REDESIGN "Force Dark" + ÁREA DE ALUNO — ✅ EM PRODUÇÃO (2026-07-21)
+- **Estado:** PR #1 **MERGED** na `main` (merge commit `4d56de9`) e **deployado em produção**: https://academia-beira-mar.vercel.app
+- **Verificado em produção:** 13/13 secções presentes · `/` `/login` `/recuperar-senha` `/definir-senha` → HTTP 200 · `/aluno` → 307 (redirect de auth, correto).
+- **Env vars na Vercel:** ✅ completas (URL + ANON_KEY postas por mim; SERVICE_ROLE_KEY posta pelo Henrique; DATABASE_URL já existia).
+- **Qualidade final:** 152 testes verdes · Biome/tsc/build verdes · cobertura ≥80% na lógica · E2E + responsivo medido (0 overflow a 375/768/1280) · revisão sénior com Important todos corrigidos.
+- **Área de aluno/instrutor (Fase 2A fechada):** editar/excluir treinos e exercícios · excluir aluno (com proteções) · selo "Convite pendente" · convite → definir senha · recuperar senha · catálogo de 74 exercícios + 4 modelos prontos · seletor por categoria · login renomeado "Área de Treino".
+- **3D:** partículas passaram a fundo ambiente global (todas as páginas), 1 canvas, opacity 30%, pausa em tab oculta, contraste medido ≥4.5:1.
+- **Polish (impeccable):** faixa de números (de-slop), diferenciais (lista editorial), sobre (sem duplicação + foto), mapa escuro, imagens Unsplash.
 - **SPEC:** docs/superpowers/specs/2026-07-20-beira-mar-redesign-design.md · **Plano:** docs/superpowers/plans/2026-07-20-beira-mar-redesign.md
 - **Feito:** tokens Force Dark (grafite+laranja+glass), Chakra Petch+Inter, hero 3D de partículas (three.js, morph haltere→coração→pin→"BM", fallback WebGL/reduced-motion, pausa off-screen), framer-motion (reduced-motion global), 13 secções redesenhadas, prova social real (5★, +5.700, reviews, Wellhub), copy PT-BR, reskin área aluno/instrutor.
 - **Preservado:** captação de leads (submitLead/Supabase), WhatsApp, planos, RLS — só restyle.
