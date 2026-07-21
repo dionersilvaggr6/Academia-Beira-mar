@@ -4,17 +4,20 @@ import { useActionState, useEffect, useId, useState } from "react";
 import { type ActionResult, aplicarModelo } from "@/app/actions/treinos";
 import { MODELOS } from "@/lib/treinos/modelos";
 
-const selectClass =
-  "rounded-lg border border-white/10 bg-white/5 p-2 text-fg text-sm focus:border-flame focus:outline-none";
-
 /**
  * Deixa o instrutor escolher um dos modelos prontos (`MODELOS`) e aplicá-lo
  * ao aluno de um clique — cria as divisões todas com os exercícios já
  * preenchidos. Séries/repetições ficam com um valor provisório (o instrutor
  * ajusta depois), por isso pede confirmação antes de criar várias linhas.
+ *
+ * São só 4 opções ricas (nome + descrição + divisões) — um `<select>` nativo
+ * escondia a maior parte dessa informação, por isso usa um radiogroup de
+ * cartões (inputs `radio` reais, só visualmente escondidos) que dá a mesma
+ * navegação por teclado nativa dos radios.
  */
 export function AplicarModeloForm({ alunoId }: { alunoId: string }) {
-  const selectId = useId();
+  const groupLabelId = useId();
+  const groupName = useId();
   const [modeloId, setModeloId] = useState("");
   const [confirming, setConfirming] = useState(false);
   const [state, action, pending] = useActionState<
@@ -35,45 +38,60 @@ export function AplicarModeloForm({ alunoId }: { alunoId: string }) {
 
   return (
     <div className="mt-3 space-y-3">
-      <div className="flex flex-col gap-1">
-        <label htmlFor={selectId} className="text-fg-dim text-sm">
+      <div className="flex flex-col gap-2">
+        <span id={groupLabelId} className="text-fg-dim text-sm">
           Aplicar modelo de treino
-        </label>
-        <select
-          id={selectId}
-          value={modeloId}
-          onChange={(e) => {
-            setModeloId(e.target.value);
-            setConfirming(false);
-          }}
-          className={`${selectClass} w-full sm:w-auto`}
+        </span>
+        <div
+          role="radiogroup"
+          aria-labelledby={groupLabelId}
+          className="grid gap-2 sm:grid-cols-2"
         >
-          <option value="">Escolhe um modelo…</option>
-          {MODELOS.map((m) => (
-            <option key={m.id} value={m.id}>
-              {m.nome}
-            </option>
-          ))}
-        </select>
+          {MODELOS.map((m) => {
+            const selected = modeloId === m.id;
+            return (
+              <label
+                key={m.id}
+                className={`flex cursor-pointer flex-col gap-1 rounded-lg border p-3 text-sm transition has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-flame ${
+                  selected
+                    ? "border-flame bg-white/[0.06] ring-2 ring-flame"
+                    : "border-white/10 bg-white/[0.03] hover:border-flame/40"
+                }`}
+              >
+                <input
+                  type="radio"
+                  name={groupName}
+                  value={m.id}
+                  checked={selected}
+                  onChange={() => {
+                    setModeloId(m.id);
+                    setConfirming(false);
+                  }}
+                  className="sr-only"
+                />
+                <span className="font-semibold text-fg">{m.nome}</span>
+                <span className="text-fg-dim text-xs">{m.descricao}</span>
+                <span className="text-fg-mute text-xs">
+                  {m.divisoes.map((d) => d.nome).join(" · ")}
+                </span>
+              </label>
+            );
+          })}
+        </div>
       </div>
 
       {modelo && (
         <div className="rounded-lg border border-flame/25 bg-white/[0.03] p-3">
-          <p className="text-fg-dim text-sm">{modelo.descricao}</p>
-          <p className="mt-2 text-fg-mute text-xs">
-            Divisões: {modelo.divisoes.map((d) => d.nome).join(", ")}
-          </p>
-
           {!confirming ? (
             <button
               type="button"
               onClick={() => setConfirming(true)}
-              className="mt-3 rounded-lg bg-flame px-3 py-2 font-semibold text-ink text-sm transition hover:brightness-110"
+              className="rounded-lg bg-flame px-3 py-2 font-semibold text-ink text-sm transition hover:brightness-110"
             >
               Aplicar modelo
             </button>
           ) : (
-            <form action={action} className="mt-3 space-y-2">
+            <form action={action} className="space-y-2">
               <input type="hidden" name="alunoId" value={alunoId} />
               <input type="hidden" name="modeloId" value={modelo.id} />
               <p className="text-fg text-sm">

@@ -40,6 +40,21 @@ body {
   font-family: var(--font-sans);
 }
 
+/*
+ * O popup nativo de <select> é desenhado pelo browser/OS, não pelo tema —
+ * herda a cor de texto clara do dark theme sobre um fundo claro do sistema,
+ * tornando as opções ilegíveis. Força fundo/texto explícitos em todo o app.
+ */
+option {
+  background-color: var(--color-surface-2);
+  color: var(--color-fg);
+}
+
+optgroup {
+  background-color: var(--color-surface-2);
+  color: var(--color-fg-dim);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
 }
