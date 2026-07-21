@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { getProfile } from "@/lib/auth/profile";
@@ -33,6 +34,14 @@ export default async function LoginPage({
         </p>
       )}
       <LoginForm />
+      <p className="mt-4 text-center text-fg-dim text-xs">
+        <Link
+          href="/recuperar-senha"
+          className="hover:text-flame hover:underline"
+        >
+          Esqueceu sua senha?
+        </Link>
+      </p>
     </section>
   );
 }

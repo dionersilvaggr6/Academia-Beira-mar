@@ -1,8 +1,11 @@
 "use server";
 
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { getProfile } from "@/lib/auth/profile";
 import { definirSenhaSchema } from "@/lib/schemas/definir-senha.schema";
+import { recuperarSenhaSchema } from "@/lib/schemas/recuperar-senha.schema";
+import { resolveOrigin } from "@/lib/site-url";
 import { createClient } from "@/lib/supabase/server";
 
 export type LoginResult = { ok: false; error: string };
@@ -72,4 +75,44 @@ export async function definirSenha(
     ok: true,
     redirectTo: profile?.role === "instrutor" ? "/instrutor" : "/aluno",
   };
+}
+
+export type RecuperarSenhaResult = { ok: true } | { ok: false; error: string };
+
+/**
+ * Pede o email de recuperação de senha do Supabase. Por segurança, **nunca**
+ * revela se o email existe: qualquer resultado (email inexistente, envio
+ * falhado, Supabase em baixo) devolve `{ ok: true }` — só um email em
+ * formato inválido é rejeitado, porque isso é feedback de formulário, não
+ * confirmação de conta. O email nunca é incluído no log de erro.
+ */
+export async function recuperarSenha(
+  _prev: RecuperarSenhaResult | null,
+  formData: FormData,
+): Promise<RecuperarSenhaResult> {
+  const parsed = recuperarSenhaSchema.safeParse({
+    email: formData.get("email"),
+  });
+  if (!parsed.success) {
+    return {
+      ok: false,
+      error: parsed.error.issues[0]?.message ?? "Email inválido",
+    };
+  }
+
+  try {
+    const headersList = await headers();
+    const origin = resolveOrigin(headersList, process.env.NEXT_PUBLIC_SITE_URL);
+    const supabase = await createClient();
+    await supabase.auth.resetPasswordForEmail(parsed.data.email, {
+      redirectTo: `${origin}/definir-senha`,
+    });
+  } catch (err) {
+    console.error(
+      "[recuperarSenha] falha ao solicitar recuperação:",
+      err instanceof Error ? err.message : "erro",
+    );
+  }
+
+  return { ok: true };
 }
