@@ -113,7 +113,17 @@ function MorphingPoints({ count }: { count: number }) {
         size={0.028}
         sizeAttenuation
         transparent
-        opacity={0.85}
+        // Blending aditivo: as partículas SOMAM luz ao fundo em vez de o
+        // escurecerem. Sem isto, o laranja a baixa opacidade sobre preto
+        // resulta num castanho-sujo (lia-se como mancha, não como brasa).
+        blending={THREE.AdditiveBlending}
+        // Aditivo não precisa de escrever profundidade e, sem isto, as
+        // partículas recortam-se umas às outras em vez de se fundirem.
+        depthWrite={false}
+        // Mais baixa do que no modo normal: como o aditivo acumula onde há
+        // sobreposição, 0.85 saturava o centro para amarelo-claro e roubava
+        // contraste ao texto por cima.
+        opacity={0.55}
         color={FLAME_FALLBACK}
       />
     </points>
