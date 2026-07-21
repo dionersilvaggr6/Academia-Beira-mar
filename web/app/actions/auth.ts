@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { getProfile } from "@/lib/auth/profile";
+import { definirSenhaSchema } from "@/lib/schemas/definir-senha.schema";
 import { createClient } from "@/lib/supabase/server";
 
 export type LoginResult = { ok: false; error: string };
@@ -28,4 +29,47 @@ export async function logout() {
   const supabase = await createClient();
   await supabase.auth.signOut();
   redirect("/login");
+}
+
+export type DefinirSenhaResult =
+  | { ok: true; redirectTo: "/instrutor" | "/aluno" }
+  | { ok: false; error: string };
+
+/**
+ * Define a senha de quem chegou pelo link de convite (já autenticado pelo
+ * callback). Não usa `redirect()` diretamente para o form poder mostrar o
+ * estado de sucesso antes de navegar — ver DefinirSenhaForm.
+ */
+export async function definirSenha(
+  _prev: DefinirSenhaResult | null,
+  formData: FormData,
+): Promise<DefinirSenhaResult> {
+  const parsed = definirSenhaSchema.safeParse({
+    senha: formData.get("senha"),
+    confirmarSenha: formData.get("confirmarSenha"),
+  });
+  if (!parsed.success) {
+    return {
+      ok: false,
+      error: parsed.error.issues[0]?.message ?? "Dados inválidos",
+    };
+  }
+
+  const supabase = await createClient();
+  const { error } = await supabase.auth.updateUser({
+    password: parsed.data.senha,
+  });
+  if (error) {
+    return {
+      ok: false,
+      error:
+        "Não foi possível definir a senha. O link pode ter expirado — peça um novo convite.",
+    };
+  }
+
+  const profile = await getProfile();
+  return {
+    ok: true,
+    redirectTo: profile?.role === "instrutor" ? "/instrutor" : "/aluno",
+  };
 }

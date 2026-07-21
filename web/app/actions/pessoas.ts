@@ -1,8 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 import { requireRole } from "@/lib/auth/profile";
 import { inviteSchema } from "@/lib/schemas/invite.schema";
+import { resolveOrigin } from "@/lib/site-url";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
@@ -30,8 +32,12 @@ export async function convidarPessoa(
   const admin = createAdminClient();
 
   try {
+    const headersList = await headers();
+    const origin = resolveOrigin(headersList, process.env.NEXT_PUBLIC_SITE_URL);
+
     const { data, error } = await admin.auth.admin.inviteUserByEmail(email, {
       data: { nome, role },
+      redirectTo: `${origin}/auth/callback?next=/definir-senha`,
     });
     if (error) throw error;
 
