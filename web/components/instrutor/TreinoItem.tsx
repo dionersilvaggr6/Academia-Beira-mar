@@ -57,13 +57,13 @@ export function TreinoItem({
             name="nome"
             required
             defaultValue={treino.nome}
-            className={input}
+            className={`${input} w-full sm:w-auto`}
             aria-label="Nome da divisão"
           />
           <input
             name="foco"
             defaultValue={treino.foco ?? ""}
-            className={input}
+            className={`${input} w-full sm:w-auto`}
             aria-label="Foco"
           />
           <button
@@ -106,7 +106,10 @@ export function TreinoItem({
             Editar
           </button>
           {confirmingDelete ? (
-            <form action={deleteAction} className="flex items-center gap-2">
+            <form
+              action={deleteAction}
+              className="flex flex-wrap items-center gap-2"
+            >
               <input type="hidden" name="id" value={treino.id} />
               <input type="hidden" name="alunoId" value={alunoId} />
               <span className="text-fg-dim text-sm">Tem a certeza?</span>

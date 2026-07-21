@@ -57,7 +57,7 @@ export function Header() {
         <div className="flex items-center gap-2">
           <a
             href="/login"
-            className="px-3 py-2 font-sans text-fg-dim text-sm transition hover:text-fg"
+            className="px-3 py-2.5 font-sans text-fg-dim text-sm transition hover:text-fg"
           >
             Entrar
           </a>

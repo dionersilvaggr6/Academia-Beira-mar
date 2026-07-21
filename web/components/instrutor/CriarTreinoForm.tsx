@@ -19,13 +19,13 @@ export function CriarTreinoForm({ alunoId }: { alunoId: string }) {
         name="nome"
         required
         placeholder="Divisão (ex.: Treino A)"
-        className={input}
+        className={`${input} w-full sm:w-auto`}
         aria-label="Nome da divisão"
       />
       <input
         name="foco"
         placeholder="Foco (ex.: Peito/Tríceps)"
-        className={input}
+        className={`${input} w-full sm:w-auto`}
         aria-label="Foco"
       />
       <button

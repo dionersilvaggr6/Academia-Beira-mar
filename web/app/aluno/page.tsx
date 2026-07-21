@@ -19,9 +19,9 @@ export default async function AlunoPage() {
 
   return (
     <section className="mx-auto max-w-2xl px-4 py-16">
-      <header className="flex items-center justify-between">
-        <div>
-          <h1 className="font-extrabold text-2xl text-fg uppercase">
+      <header className="flex flex-wrap items-center justify-between gap-2">
+        <div className="min-w-0">
+          <h1 className="break-words font-extrabold text-2xl text-fg uppercase">
             Olá, {profile.nome}
           </h1>
           <p className="text-fg-dim text-sm">Os seus treinos</p>

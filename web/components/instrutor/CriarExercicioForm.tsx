@@ -19,7 +19,7 @@ export function CriarExercicioForm({ treinoId }: { treinoId: string }) {
         name="nome"
         required
         placeholder="Exercício"
-        className={input}
+        className={`${input} w-full sm:w-auto`}
         aria-label="Exercício"
       />
       <input

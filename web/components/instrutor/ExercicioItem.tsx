@@ -55,7 +55,7 @@ export function ExercicioItem({
             name="nome"
             required
             defaultValue={exercicio.nome}
-            className={input}
+            className={`${input} w-full sm:w-auto`}
             aria-label="Exercício"
           />
           <input
@@ -84,7 +84,7 @@ export function ExercicioItem({
             name="observacoes"
             defaultValue={exercicio.observacoes ?? ""}
             placeholder="Observações"
-            className={input}
+            className={`${input} w-full sm:w-auto`}
             aria-label="Observações"
           />
           <button
@@ -126,7 +126,10 @@ export function ExercicioItem({
           Editar
         </button>
         {confirmingDelete ? (
-          <form action={deleteAction} className="flex items-center gap-2">
+          <form
+            action={deleteAction}
+            className="flex flex-wrap items-center gap-2"
+          >
             <input type="hidden" name="id" value={exercicio.id} />
             <input type="hidden" name="alunoId" value={alunoId} />
             <span className="text-fg-dim text-xs">Confirma?</span>

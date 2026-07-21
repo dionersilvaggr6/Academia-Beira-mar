@@ -21,8 +21,8 @@ export default async function InstrutorPage() {
 
   return (
     <section className="mx-auto max-w-3xl px-4 py-16">
-      <header className="flex items-center justify-between">
-        <h1 className="font-extrabold text-2xl text-fg uppercase">
+      <header className="flex flex-wrap items-center justify-between gap-2">
+        <h1 className="min-w-0 break-words font-extrabold text-2xl text-fg uppercase">
           Painel — {profile.nome}
         </h1>
         <LogoutButton />

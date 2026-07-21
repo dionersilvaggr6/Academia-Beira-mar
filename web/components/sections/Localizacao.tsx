@@ -36,7 +36,7 @@ export function Localizacao() {
               ))}
             </ul>
 
-            <p className="mt-6 font-sans text-fg-mute text-xs">
+            <p className="mt-6 font-sans text-fg-mute text-sm">
               Mais movimentado por volta das 20h.
             </p>
           </GlassCard>
