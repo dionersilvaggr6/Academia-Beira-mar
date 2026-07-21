@@ -30,3 +30,24 @@ export function parseHashTokens(hash: string): HashTokens | null {
 
   return { accessToken, refreshToken, type: params.get("type") };
 }
+
+/**
+ * Erro devolvido pelo Supabase no fragmento quando o link **não** pode ser
+ * usado — tipicamente expirado (`otp_expired`) ou já consumido. Nesse caso
+ * não vêm tokens nenhuns, só `error` / `error_code` / `error_description`.
+ *
+ * Sem isto, um link inválido deixava a pessoa parada na homepage sem
+ * qualquer explicação (o `parseHashTokens` devolve `null` e mais nada
+ * acontece).
+ */
+export function parseHashError(hash: string): string | null {
+  const raw = hash.startsWith("#") ? hash.slice(1) : hash;
+  if (!raw) return null;
+
+  const params = new URLSearchParams(raw);
+  const code = params.get("error_code");
+  const error = params.get("error");
+  if (!code && !error) return null;
+
+  return code ?? error;
+}
