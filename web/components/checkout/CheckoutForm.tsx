@@ -7,6 +7,7 @@ import {
   iniciarPagamento,
 } from "@/app/actions/checkout";
 import { CheckoutPendingMessage } from "@/components/checkout/CheckoutPendingMessage";
+import { CheckoutPixPayment } from "@/components/checkout/CheckoutPixPayment";
 import { CustomerFields } from "@/components/checkout/CustomerFields";
 import { OrderSummary } from "@/components/checkout/OrderSummary";
 import { PaymentMethodSelector } from "@/components/checkout/PaymentMethodSelector";
@@ -40,6 +41,20 @@ export function CheckoutForm({
   useEffect(() => {
     if (state?.ok && state.kind === "redirect") router.push(state.url);
   }, [state, router]);
+
+  // Pix fica inline na própria página (sem redirect) — só mostra se ainda
+  // tivermos o plano em memória (garantido: só existe resultado depois de
+  // submeter, e o botão de submeter só fica ativo com `plano` escolhido).
+  if (state?.ok && state.kind === "pix" && plano) {
+    return (
+      <CheckoutPixPayment
+        plano={plano}
+        qrCodeBase64={state.qrCodeBase64}
+        copiaECola={state.copiaECola}
+        expiresAt={state.expiresAt}
+      />
+    );
+  }
 
   if (state?.ok && state.kind === "pendente") {
     return (

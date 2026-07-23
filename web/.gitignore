@@ -32,6 +32,9 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# ...exceto o template sem segredos (só placeholders) — precisa de ficar
+# versionado para quem clona o repo saber que variáveis definir.
+!.env.example
 
 # vercel
 .vercel

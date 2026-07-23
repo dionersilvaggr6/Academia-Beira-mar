@@ -1,3 +1,4 @@
+import { MercadoPagoProvider } from "@/lib/payments/mercadopago";
 import type { Plano } from "@/lib/plans.schema";
 
 /**
@@ -11,10 +12,26 @@ export type OrderInput = {
   plano: Plano;
   metodo: MetodoPagamento;
   cliente: { nome: string; email: string; telefone: string };
+  /**
+   * Origin absoluta (protocolo+host) do pedido atual — necessária para
+   * montar `back_urls` de providers redirect-based (ex.: Checkout Pro do
+   * Mercado Pago). Calculada uma única vez em `iniciarPagamento` via
+   * `resolveOrigin`, para os providers nunca chamarem `next/headers`
+   * diretamente (mantém-nos puros e testáveis sem mocks do Next.js).
+   */
+  origin: string;
 };
 
 export type CheckoutResult =
   | { status: "redirect"; url: string }
+  | {
+      status: "pix";
+      qrCodeBase64: string;
+      copiaECola: string;
+      paymentId: string;
+      ticketUrl?: string;
+      expiresAt?: string;
+    }
   | { status: "pending"; info: string }
   | { status: "unavailable" };
 
@@ -46,22 +63,22 @@ export class NotConfiguredProvider implements PaymentProvider {
 }
 
 /**
- * Escolhe o provider a partir da env `PAYMENT_PROVIDER`. Hoje só existe o
- * `NotConfiguredProvider` (sem gateway ligado).
+ * Escolhe o provider a partir da env `PAYMENT_PROVIDER`.
  *
- * Para ligar o Mercado Pago (Pix — o gateway por defeito para o Brasil)
- * quando a academia tiver a conta pronta:
- *   1. Implementar uma `MercadoPagoProvider` aqui (chamando a API deles com
- *      `MERCADOPAGO_ACCESS_TOKEN`, nunca hardcoded — só via env).
- *   2. Adicionar `case "mercadopago": return new MercadoPagoProvider();`
- *      abaixo.
- *   3. Definir `PAYMENT_PROVIDER=mercadopago` no `.env` de produção.
- * Nenhum outro ficheiro precisa de mudar — `app/actions/checkout.ts` já
- * chama `getPaymentProvider()` de forma agnóstica ao gateway.
+ * `mercadopago` liga o `MercadoPagoProvider` (modo TEST — ver
+ * `docs/mercadopago-teste.md`), mas só se `MP_ACCESS_TOKEN` estiver
+ * definido; sem o token, cai sempre para `NotConfiguredProvider` — nunca
+ * lança, nunca inventa/aceita credenciais. Qualquer outro valor (ou a env
+ * por definir) também cai no `NotConfiguredProvider`.
  */
 export function getPaymentProvider(): PaymentProvider {
   const provider = process.env.PAYMENT_PROVIDER;
   switch (provider) {
+    case "mercadopago": {
+      const accessToken = process.env.MP_ACCESS_TOKEN;
+      if (!accessToken) return new NotConfiguredProvider();
+      return new MercadoPagoProvider(accessToken);
+    }
     default:
       return new NotConfiguredProvider();
   }
