@@ -27,8 +27,14 @@ export async function submitLead(
     await getDb().insert(leads).values(parsed.data);
     return { ok: true };
   } catch (err) {
-    // Log do erro no servidor (sem PII — nunca os dados do lead)
-    console.error("[submitLead] falha ao gravar lead:", err);
+    // Log do erro no servidor (sem PII — nunca os dados do lead). `err` pode
+    // trazer o valor ofensivo embutido (ex.: mensagens de constraint únicos
+    // do Postgres citam a linha), por isso nunca se regista o objeto inteiro
+    // — só a mensagem.
+    console.error(
+      "[submitLead] falha ao gravar lead:",
+      err instanceof Error ? err.message : "erro desconhecido",
+    );
     return {
       ok: false,
       error: "Não foi possível enviar agora. Tenta pelo WhatsApp.",

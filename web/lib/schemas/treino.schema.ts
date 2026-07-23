@@ -26,6 +26,11 @@ export const apagarTreinoSchema = z.object({
   alunoId: z.string().uuid("Aluno inválido"),
 });
 
+export const criarExercicioSchema = exercicioSchema.extend({
+  treinoId: z.string().uuid("Divisão inválida"),
+  alunoId: z.string().uuid("Aluno inválido"),
+});
+
 export const editarExercicioSchema = exercicioSchema.extend({
   id: z.string().uuid("Exercício inválido"),
   alunoId: z.string().uuid("Aluno inválido"),
@@ -45,6 +50,7 @@ export const aplicarModeloSchema = z.object({
 
 export type TreinoInput = z.infer<typeof treinoSchema>;
 export type ExercicioInput = z.infer<typeof exercicioSchema>;
+export type CriarExercicioInput = z.infer<typeof criarExercicioSchema>;
 export type EditarTreinoInput = z.infer<typeof editarTreinoSchema>;
 export type ApagarTreinoInput = z.infer<typeof apagarTreinoSchema>;
 export type EditarExercicioInput = z.infer<typeof editarExercicioSchema>;

@@ -30,7 +30,10 @@ export async function login(
 
 export async function logout() {
   const supabase = await createClient();
-  await supabase.auth.signOut();
+  const { error } = await supabase.auth.signOut();
+  if (error) {
+    console.error("[logout] falha ao terminar sessão:", error.message);
+  }
   redirect("/login");
 }
 

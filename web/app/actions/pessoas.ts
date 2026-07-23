@@ -45,7 +45,22 @@ export async function convidarPessoa(
     const { error: pErr } = await admin
       .from("profiles")
       .upsert({ id: data.user.id, nome, role });
-    if (pErr) throw pErr;
+    if (pErr) {
+      // O convite já criou o utilizador de auth, mas o perfil falhou — sem
+      // isto ficaria um utilizador "preso" (existe no auth, sem perfil) que
+      // o Supabase recusa reconvidar pelo mesmo email. Remove-o para o email
+      // voltar a ficar disponível.
+      const { error: cleanupError } = await admin.auth.admin.deleteUser(
+        data.user.id,
+      );
+      if (cleanupError) {
+        console.error(
+          "[convidarPessoa] falha ao limpar utilizador órfão:",
+          cleanupError.message,
+        );
+      }
+      throw pErr;
+    }
 
     revalidatePath("/instrutor");
     return { ok: true };
@@ -62,17 +77,23 @@ export async function convidarPessoa(
 }
 
 /**
- * Apaga um aluno por completo (só instrutores): exercícios, divisões de
- * treino, o perfil e a conta de autenticação. Irreversível — a UI
+ * Apaga um aluno por completo (só instrutores): a conta de autenticação,
+ * exercícios, divisões de treino e o perfil. Irreversível — a UI
  * (`ApagarAlunoButton`) exige uma segunda confirmação deliberada antes de
  * submeter.
  *
- * Apaga em camadas de forma explícita (exercícios → treinos → perfil →
- * utilizador de auth) em vez de confiar só na cascade da BD — mesma prática
- * já usada em `apagarTreino` (app/actions/treinos.ts). `db/schema.ts` também
- * declara `onDelete: "cascade"` em treinos→profiles e exercicios→treinos,
- * por isso mesmo que um passo explícito seja saltado por engano a BD limpa
- * as linhas dependentes.
+ * A conta de auth é apagada PRIMEIRO, antes de tocar em qualquer linha
+ * dependente: se isto falhar, nada foi alterado (estado retomável). Se em
+ * vez disso apagássemos o perfil/treinos primeiro e o `deleteUser` falhasse
+ * no fim, ficava um utilizador de auth órfão sem perfil — o mesmo problema
+ * que `convidarPessoa` evita ao limpar o utilizador quando o upsert falha.
+ * Só depois de confirmado o `deleteUser` é que se apagam as linhas
+ * dependentes em camadas explícitas (exercícios → treinos → perfil), em vez
+ * de confiar só na cascade da BD — mesma prática já usada em `apagarTreino`
+ * (app/actions/treinos.ts). `db/schema.ts` também declara
+ * `onDelete: "cascade"` em treinos→profiles e exercicios→treinos, por isso
+ * mesmo que um passo explícito seja saltado por engano a BD limpa as linhas
+ * dependentes.
  *
  * Nunca regista nome/email do aluno — só mensagens de erro genéricas.
  */
@@ -110,6 +131,11 @@ export async function apagarAluno(
       return { ok: false, error: "Só é possível excluir contas de aluno." };
     }
 
+    // Apaga a conta de auth primeiro: uma falha aqui não deixa nada por
+    // apagar (ver nota no topo da função).
+    const { error: authError } = await admin.auth.admin.deleteUser(alunoId);
+    if (authError) throw authError;
+
     const { data: treinosData, error: treinosError } = await admin
       .from("treinos")
       .select("id")
@@ -136,9 +162,6 @@ export async function apagarAluno(
       .delete()
       .eq("id", alunoId);
     if (profileDeleteError) throw profileDeleteError;
-
-    const { error: authError } = await admin.auth.admin.deleteUser(alunoId);
-    if (authError) throw authError;
 
     revalidatePath("/instrutor");
     return { ok: true };
