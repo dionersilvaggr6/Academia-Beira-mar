@@ -7,7 +7,13 @@ import { ExercicioNomeSelect } from "@/components/instrutor/ExercicioNomeSelect"
 const input =
   "rounded-lg border border-white/10 bg-white/5 p-2 text-fg text-sm placeholder:text-fg-dim focus:border-flame focus:outline-none";
 
-export function CriarExercicioForm({ treinoId }: { treinoId: string }) {
+export function CriarExercicioForm({
+  treinoId,
+  alunoId,
+}: {
+  treinoId: string;
+  alunoId: string;
+}) {
   const [state, action, pending] = useActionState<
     ActionResult | null,
     FormData
@@ -16,6 +22,7 @@ export function CriarExercicioForm({ treinoId }: { treinoId: string }) {
   return (
     <form action={action} className="mt-3 flex flex-wrap items-center gap-2">
       <input type="hidden" name="treinoId" value={treinoId} />
+      <input type="hidden" name="alunoId" value={alunoId} />
       <ExercicioNomeSelect />
       <input
         name="series"

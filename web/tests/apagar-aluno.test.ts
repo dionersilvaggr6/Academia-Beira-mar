@@ -27,6 +27,17 @@ function fd(data: Record<string, string>) {
   return f;
 }
 
+/** Ordem da primeira chamada de um mock, para comparar sequência entre mocks distintos. */
+function firstCallOrder(mock: {
+  mock: { invocationCallOrder: number[] };
+}): number {
+  const order = mock.mock.invocationCallOrder[0];
+  if (order === undefined) {
+    throw new Error("mock não foi chamado — sem invocationCallOrder");
+  }
+  return order;
+}
+
 const instrutor = {
   id: "550e8400-e29b-41d4-a716-446655440099",
   nome: "Prof",
@@ -127,7 +138,7 @@ beforeEach(() => {
 });
 
 describe("apagarAluno", () => {
-  it("caminho feliz: apaga exercícios, treinos, perfil e a conta de auth, por esta ordem", async () => {
+  it("caminho feliz: apaga a conta de auth primeiro, depois exercícios, treinos e perfil, por esta ordem", async () => {
     const admin = buildAdminMock();
     createAdminClientMock.mockReturnValue(admin);
 
@@ -135,6 +146,7 @@ describe("apagarAluno", () => {
 
     expect(r).toEqual({ ok: true });
     expect(admin._mocks.profileSingleMock).toHaveBeenCalled();
+    expect(admin._mocks.deleteUserMock).toHaveBeenCalledWith(alunoId);
     expect(admin._mocks.treinosSelectEqMock).toHaveBeenCalledWith(
       "aluno_id",
       alunoId,
@@ -151,8 +163,20 @@ describe("apagarAluno", () => {
       "id",
       alunoId,
     );
-    expect(admin._mocks.deleteUserMock).toHaveBeenCalledWith(alunoId);
     expect(revalidatePathMock).toHaveBeenCalledWith("/instrutor");
+
+    // A conta de auth é apagada ANTES de qualquer linha dependente — se uma
+    // falha a meio deixar dados por apagar, nunca deixa um utilizador de
+    // auth órfão sem perfil (ver comentário em `apagarAluno`).
+    const authOrder = firstCallOrder(admin._mocks.deleteUserMock);
+    const treinosSelectOrder = firstCallOrder(admin._mocks.treinosSelectEqMock);
+    const exerciciosOrder = firstCallOrder(admin._mocks.exerciciosDeleteInMock);
+    const treinosDeleteOrder = firstCallOrder(admin._mocks.treinosDeleteEqMock);
+    const profileDeleteOrder = firstCallOrder(admin._mocks.profileDeleteEqMock);
+    expect(authOrder).toBeLessThan(treinosSelectOrder);
+    expect(treinosSelectOrder).toBeLessThan(exerciciosOrder);
+    expect(exerciciosOrder).toBeLessThan(treinosDeleteOrder);
+    expect(treinosDeleteOrder).toBeLessThan(profileDeleteOrder);
   });
 
   it("caminho feliz sem divisões: não chama delete de exercícios", async () => {
@@ -193,7 +217,7 @@ describe("apagarAluno", () => {
     expect(createAdminClientMock).not.toHaveBeenCalled();
   });
 
-  it("erro do supabase/admin (ex.: falha ao apagar exercícios) devolve ok:false e para — não continua para treinos/perfil/auth", async () => {
+  it("erro do supabase/admin (ex.: falha ao apagar exercícios) devolve ok:false e para — não continua para treinos/perfil", async () => {
     const admin = buildAdminMock({
       exerciciosDeleteError: { message: "db down" },
     });
@@ -207,15 +231,24 @@ describe("apagarAluno", () => {
     });
     expect(admin._mocks.treinosDeleteEqMock).not.toHaveBeenCalled();
     expect(admin._mocks.profileDeleteEqMock).not.toHaveBeenCalled();
-    expect(admin._mocks.deleteUserMock).not.toHaveBeenCalled();
+    // A conta de auth já foi apagada com sucesso antes disto acontecer — é
+    // esperado que tenha sido chamada, é o passo dependente que não avança.
+    expect(admin._mocks.deleteUserMock).toHaveBeenCalledWith(alunoId);
   });
 
-  it("erro ao apagar a conta de auth também devolve ok:false", async () => {
+  it("erro ao apagar a conta de auth devolve ok:false e não toca em nenhuma linha dependente (sem órfãos)", async () => {
     const admin = buildAdminMock({ deleteUserError: { message: "auth down" } });
     createAdminClientMock.mockReturnValue(admin);
 
     const r = await apagarAluno(null, fd({ alunoId }));
 
-    expect(r.ok).toBe(false);
+    expect(r).toEqual({
+      ok: false,
+      error: "Não foi possível excluir o aluno. Tenta de novo.",
+    });
+    expect(admin._mocks.treinosSelectEqMock).not.toHaveBeenCalled();
+    expect(admin._mocks.exerciciosDeleteInMock).not.toHaveBeenCalled();
+    expect(admin._mocks.treinosDeleteEqMock).not.toHaveBeenCalled();
+    expect(admin._mocks.profileDeleteEqMock).not.toHaveBeenCalled();
   });
 });

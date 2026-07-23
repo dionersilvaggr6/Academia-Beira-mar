@@ -6,6 +6,10 @@ import { TreinoItem } from "@/components/instrutor/TreinoItem";
 import { requireRole } from "@/lib/auth/profile";
 import { createClient } from "@/lib/supabase/server";
 
+// Página autenticada e personalizada — sempre renderizada por pedido (nunca
+// pré-renderizada no build; depende da sessão e do Supabase em runtime).
+export const dynamic = "force-dynamic";
+
 type Treino = { id: string; nome: string; foco: string | null };
 type Exercicio = {
   id: string;

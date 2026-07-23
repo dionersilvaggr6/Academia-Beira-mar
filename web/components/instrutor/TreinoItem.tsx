@@ -150,7 +150,7 @@ export function TreinoItem({
           <ExercicioItem key={e.id} exercicio={e} alunoId={alunoId} />
         ))}
       </ul>
-      <CriarExercicioForm treinoId={treino.id} />
+      <CriarExercicioForm treinoId={treino.id} alunoId={alunoId} />
     </div>
   );
 }

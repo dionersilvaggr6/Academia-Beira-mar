@@ -29,6 +29,21 @@ drop policy if exists profiles_self_update on profiles;
 create policy profiles_self_update on profiles for update
   using (id = auth.uid());
 
+-- Impede escalonamento de privilégios: um aluno não pode mudar o próprio role.
+create or replace function prevent_role_escalation() returns trigger
+language plpgsql security definer set search_path = public as $$
+begin
+  if new.role is distinct from old.role and not is_instrutor() then
+    raise exception 'Nao e permitido alterar o papel do utilizador.';
+  end if;
+  return new;
+end;
+$$;
+drop trigger if exists trg_prevent_role_escalation on profiles;
+create trigger trg_prevent_role_escalation
+  before update on profiles
+  for each row execute function prevent_role_escalation();
+
 -- treinos: aluno lê os seus; instrutor gere todos
 drop policy if exists treinos_read on treinos;
 create policy treinos_read on treinos for select

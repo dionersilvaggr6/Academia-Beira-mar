@@ -6,15 +6,22 @@ import {
   apagarExercicioSchema,
   apagarTreinoSchema,
   aplicarModeloSchema,
+  criarExercicioSchema,
   editarExercicioSchema,
   editarTreinoSchema,
-  exercicioSchema,
   treinoSchema,
 } from "@/lib/schemas/treino.schema";
 import { createClient } from "@/lib/supabase/server";
 import { MODELOS } from "@/lib/treinos/modelos";
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
+
+// IDOR entre instrutores: as ações abaixo (editar/apagar por `id`) só exigem
+// `is_instrutor()` — não confirmam que o treino/exercício pertence a um
+// aluno "atribuído" a este instrutor específico. Assumido de propósito: o
+// ginásio tem um único instrutor, por isso não há fronteira a proteger. Se um
+// dia houver vários instrutores, isto precisa de um `created_by`/ownership
+// check explícito antes do update/delete.
 
 // Séries/repetições ficam sempre à escolha do instrutor por aluno; a BD exige
 // NOT NULL nestas colunas, por isso um modelo aplica um valor neutro que a UI
@@ -42,10 +49,20 @@ export async function criarTreino(
   }
 
   const supabase = await createClient();
+
+  // Nova divisão entra no fim da lista: conta as que já existem para o
+  // aluno para calcular a próxima `ordem` (senão fica sempre 0 e a ordem de
+  // exibição depende do acaso).
+  const { data: existentes } = await supabase
+    .from("treinos")
+    .select("id")
+    .eq("aluno_id", parsed.data.alunoId);
+
   const { error } = await supabase.from("treinos").insert({
     aluno_id: parsed.data.alunoId,
     nome: parsed.data.nome,
     foco: parsed.data.foco ?? null,
+    ordem: existentes?.length ?? 0,
     created_by: instrutor.id,
   });
   if (error) {
@@ -64,8 +81,9 @@ export async function criarExercicio(
 ): Promise<ActionResult> {
   await requireRole("instrutor");
 
-  const treinoId = String(formData.get("treinoId") ?? "");
-  const parsed = exercicioSchema.safeParse({
+  const parsed = criarExercicioSchema.safeParse({
+    treinoId: formData.get("treinoId"),
+    alunoId: formData.get("alunoId"),
     nome: formData.get("nome"),
     series: Number(formData.get("series")),
     repeticoes: formData.get("repeticoes"),
@@ -80,20 +98,33 @@ export async function criarExercicio(
   }
 
   const supabase = await createClient();
+
+  // Novo exercício entra no fim da lista: conta os que já existem na
+  // divisão para calcular a próxima `ordem`.
+  const { data: existentes } = await supabase
+    .from("exercicios")
+    .select("id")
+    .eq("treino_id", parsed.data.treinoId);
+
   const { error } = await supabase.from("exercicios").insert({
-    treino_id: treinoId,
+    treino_id: parsed.data.treinoId,
     nome: parsed.data.nome,
     series: parsed.data.series,
     repeticoes: parsed.data.repeticoes,
     carga: parsed.data.carga ?? null,
     observacoes: parsed.data.observacoes ?? null,
+    ordem: existentes?.length ?? 0,
   });
   if (error) {
     console.error("[criarExercicio] falha:", error.message);
     return { ok: false, error: "Não foi possível adicionar o exercício." };
   }
 
-  revalidatePath("/instrutor");
+  // `alunoId` vem do form (a página do aluno já o tem) para revalidar a
+  // página certa — antes disto revalidava "/instrutor", que não mostra
+  // exercícios, por isso o novo exercício só aparecia depois de um refresh
+  // manual.
+  revalidatePath(`/instrutor/aluno/${parsed.data.alunoId}`);
   return { ok: true };
 }
 
