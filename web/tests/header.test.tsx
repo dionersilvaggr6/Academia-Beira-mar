@@ -2,11 +2,6 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { Header } from "@/components/layout/Header";
 
-// Mock the waLink function
-vi.mock("@/lib/whatsapp", () => ({
-  waLink: () => "https://wa.me/5551997442463",
-}));
-
 // Mock next/navigation
 vi.mock("next/navigation", () => ({
   useRouter: () => ({
@@ -21,12 +16,12 @@ describe("Header", () => {
     expect(screen.getByText("BEIRA MAR")).toBeInTheDocument();
   });
 
-  it("renders WhatsApp link", () => {
+  it("'Matricular' leva ao checkout, não mais direto ao WhatsApp", () => {
     render(<Header />);
-    const whatsappLink = screen.getByRole("link", { name: /Matricular/i });
-    expect(whatsappLink).toBeInTheDocument();
-    expect(whatsappLink).toHaveAttribute("href", "https://wa.me/5551997442463");
-    expect(whatsappLink).toHaveAttribute("target", "_blank");
+    const matricularLink = screen.getByRole("link", { name: /Matricular/i });
+    expect(matricularLink).toBeInTheDocument();
+    expect(matricularLink).toHaveAttribute("href", "/checkout");
+    expect(matricularLink).not.toHaveAttribute("target");
   });
 
   it("renders login link", () => {

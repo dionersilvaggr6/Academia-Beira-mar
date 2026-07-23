@@ -46,3 +46,22 @@ export const PLANS: Plano[] = [
     destaque: true,
   },
 ];
+
+/**
+ * Formata o preço de um plano em pt-BR — ex. "R$ 140,00" ou, quando o plano
+ * tem parcelas, "3× de R$ 125,00". Única fonte de verdade: usada pelo card
+ * de planos (`PlanoCard`) e pelo checkout (resumo do pedido) para nunca
+ * divergirem.
+ */
+export function precoLabel(plano: Plano): string {
+  const val = plano.preco.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  });
+  return plano.parcelas ? `${plano.parcelas}× de ${val}` : val;
+}
+
+/** Busca um plano pelo id — usado pelo checkout para validar/pré-selecionar. */
+export function findPlano(id: string): Plano | undefined {
+  return PLANS.find((p) => p.id === id);
+}

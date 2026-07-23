@@ -23,4 +23,12 @@ describe("Hero", () => {
     expect(matricularLink).toBeInTheDocument();
     expect(planosLink).toBeInTheDocument();
   });
+
+  it("'Matricular agora' leva ao checkout, não mais direto ao WhatsApp", () => {
+    render(<Hero />);
+    const matricularLink = screen.getByRole("link", {
+      name: /Matricular agora/i,
+    });
+    expect(matricularLink).toHaveAttribute("href", "/checkout");
+  });
 });

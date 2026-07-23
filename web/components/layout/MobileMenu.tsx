@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 import { ButtonLink } from "@/components/ui/Button";
 import { HEADER_NAV } from "@/lib/nav";
-import { waLink } from "@/lib/whatsapp";
 
 const FOCUSABLE_SELECTOR =
   'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -96,13 +95,7 @@ export function MobileMenu({
             Entrar
           </a>
         </nav>
-        <ButtonLink
-          href={waLink()}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={onClose}
-          className="mt-auto"
-        >
+        <ButtonLink href="/checkout" onClick={onClose} className="mt-auto">
           Matricular
         </ButtonLink>
       </div>

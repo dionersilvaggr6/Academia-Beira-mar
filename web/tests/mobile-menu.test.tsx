@@ -1,11 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { useRef, useState } from "react";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import { MobileMenu } from "@/components/layout/MobileMenu";
-
-vi.mock("@/lib/whatsapp", () => ({
-  waLink: () => "https://wa.me/5551997442463",
-}));
 
 /** Mirrors how Header actually wires the menu: a trigger button + state. */
 function Harness() {
@@ -42,7 +38,7 @@ describe("MobileMenu", () => {
     expect(screen.getByRole("link", { name: "Entrar" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Matricular/i })).toHaveAttribute(
       "href",
-      "https://wa.me/5551997442463",
+      "/checkout",
     );
   });
 

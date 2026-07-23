@@ -1,8 +1,6 @@
 import { Badge } from "@/components/ui/Badge";
 import { ButtonLink } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { SITE } from "@/content/site";
-import { waLink } from "@/lib/whatsapp";
 
 export function Hero() {
   return (
@@ -27,12 +25,9 @@ export function Hero() {
             climatizada, ambiente familiar.
           </p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <ButtonLink
-              href={waLink()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-8"
-            >
+            {/* Fluxo de venda vai para o checkout próprio, não mais direto
+                ao WhatsApp — ver app/checkout/page.tsx. */}
+            <ButtonLink href="/checkout" className="px-8">
               Matricular agora
             </ButtonLink>
             <ButtonLink href="#planos" variant="ghost" className="px-8">
