@@ -5,7 +5,6 @@ import { ButtonLink } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { HEADER_NAV } from "@/lib/nav";
 import { cn } from "@/lib/ui/cn";
-import { waLink } from "@/lib/whatsapp";
 
 function MenuIcon({ open }: { open: boolean }) {
   return (
@@ -83,12 +82,9 @@ export function Header() {
           >
             Entrar
           </a>
-          <ButtonLink
-            href={waLink()}
-            target="_blank"
-            rel="noopener noreferrer"
-            size="compact"
-          >
+          {/* Fluxo de venda vai para o checkout próprio, sem plano
+              pré-selecionado — ver app/checkout/page.tsx. */}
+          <ButtonLink href="/checkout" size="compact">
             Matricular
           </ButtonLink>
           <button
