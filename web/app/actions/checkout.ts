@@ -1,17 +1,29 @@
 "use server";
 
+import { headers } from "next/headers";
 import { getDb } from "@/db/client";
 import { leads } from "@/db/schema";
 import { checkoutSchema } from "@/lib/checkout.schema";
 import {
+  type CheckoutResult,
   getPaymentProvider,
   type MetodoPagamento,
 } from "@/lib/payments/provider";
 import { findPlano } from "@/lib/plans";
+import { resolveOrigin } from "@/lib/site-url";
 import { waLink } from "@/lib/whatsapp";
 
 export type CheckoutActionResult =
   | { ok: true; kind: "redirect"; url: string }
+  | {
+      ok: true;
+      kind: "pix";
+      qrCodeBase64: string;
+      copiaECola: string;
+      paymentId: string;
+      ticketUrl?: string;
+      expiresAt?: string;
+    }
   | { ok: true; kind: "pendente"; mensagem: string; whatsapp: string }
   | { ok: false; error: string };
 
@@ -72,16 +84,45 @@ export async function iniciarPagamento(
     };
   }
 
-  const resultado = await getPaymentProvider().createCheckout({
-    plano,
-    metodo,
-    cliente: { nome, email, telefone },
-  });
+  // Nunca deixa uma falha de comunicação com o gateway (ex.: Mercado Pago
+  // fora do ar) quebrar a action — o lead já foi gravado acima, então o
+  // pior caso é sempre o fallback "pendente" abaixo, nunca um erro 500.
+  let resultado: CheckoutResult;
+  try {
+    const origin = resolveOrigin(
+      await headers(),
+      process.env.NEXT_PUBLIC_SITE_URL,
+    );
+    resultado = await getPaymentProvider().createCheckout({
+      plano,
+      metodo,
+      cliente: { nome, email, telefone },
+      origin,
+    });
+  } catch (err) {
+    console.error(
+      "[iniciarPagamento] falha ao comunicar com o gateway de pagamento:",
+      err instanceof Error ? err.message : "erro desconhecido",
+    );
+    resultado = { status: "unavailable" };
+  }
 
   const whatsapp = waLink({ plano: plano.nome });
 
   if (resultado.status === "redirect") {
     return { ok: true, kind: "redirect", url: resultado.url };
+  }
+
+  if (resultado.status === "pix") {
+    return {
+      ok: true,
+      kind: "pix",
+      qrCodeBase64: resultado.qrCodeBase64,
+      copiaECola: resultado.copiaECola,
+      paymentId: resultado.paymentId,
+      ticketUrl: resultado.ticketUrl,
+      expiresAt: resultado.expiresAt,
+    };
   }
 
   if (resultado.status === "pending") {
