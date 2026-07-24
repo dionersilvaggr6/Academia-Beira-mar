@@ -14,6 +14,12 @@ export { ParticleFallback };
 
 const SECONDS_PER_SHAPE = 6.5;
 const POINTER_DAMPING = 4;
+// Caps the morph/rotation/color math to ~30fps instead of the display's
+// native rate (often 60-120Hz): this loop touches every particle every time
+// it runs, so halving (or more) its frequency directly cuts main-thread
+// cost, which is what Lighthouse's TBT/bootup-time audits penalize. The GPU
+// still repaints at the display rate; only the CPU-side recompute is capped.
+const TARGET_FRAME_SECONDS = 1 / 30;
 // Mirror app/globals.css `--color-flame` / `--color-flame-hi` as a safety net
 // in case the CSS custom properties can't be read (e.g. no `document`).
 const FLAME_FALLBACK = "#ff6a2b";
@@ -44,6 +50,7 @@ function MorphingPoints({ count }: { count: number }) {
   const pointsRef = useRef<THREE.Points>(null);
   const materialRef = useRef<THREE.PointsMaterial>(null);
   const pointerSmoothed = useRef({ x: 0, y: 0 });
+  const lastUpdateRef = useRef(0);
 
   const shapes = useMemo(() => buildTargetShapes(count), [count]);
   const positions = useMemo(() => shapes[0].slice(), [shapes]);
@@ -56,7 +63,16 @@ function MorphingPoints({ count }: { count: number }) {
     [],
   );
 
-  useFrame((state, delta) => {
+  useFrame((state) => {
+    const now = state.clock.elapsedTime;
+    const sinceLastUpdate = now - lastUpdateRef.current;
+    if (sinceLastUpdate < TARGET_FRAME_SECONDS) return;
+    lastUpdateRef.current = now;
+    // Effective delta since our last *processed* frame (not the raw rAF
+    // delta) — keeps the pointer damping below physically correct now that
+    // this callback body only actually runs ~30 times/sec.
+    const delta = sinceLastUpdate;
+
     const positionAttribute = pointsRef.current?.geometry.attributes.position;
     if (positionAttribute instanceof THREE.BufferAttribute) {
       const t = (state.clock.elapsedTime / SECONDS_PER_SHAPE) % shapes.length;

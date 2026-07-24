@@ -23,9 +23,10 @@ export default defineConfig({
         // Render-only 3D / animation wrappers: no meaningful branch logic to
         // unit-test in jsdom (no WebGL, no real rAF loop). The pure shape
         // math they depend on (particle-shapes.ts) IS covered separately.
+        // ParticleFieldLazy's idle-after-load deferral IS covered (see
+        // tests/particle-field-lazy.test.tsx), so it's no longer excluded.
         "components/three/ParticleField.tsx",
         "components/three/CanvasBoundary.tsx",
-        "components/three/ParticleFieldLazy.tsx",
         "components/MotionProvider.tsx",
       ],
     },

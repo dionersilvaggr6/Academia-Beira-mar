@@ -104,7 +104,7 @@ export function Depoimentos() {
               <ArrowIcon direction="left" />
             </button>
 
-            <div className="flex gap-2">
+            <div className="flex">
               {reviews.map((review, i) => (
                 <button
                   key={review.fonte + review.texto}
@@ -112,11 +112,20 @@ export function Depoimentos() {
                   onClick={() => goTo(i)}
                   aria-label={`Ir para depoimento ${i + 1}`}
                   aria-current={i === index}
-                  className={cn(
-                    "h-2 w-2 rounded-full transition",
-                    i === index ? "bg-flame" : "bg-white/20",
-                  )}
-                />
+                  // The visible dot stays small (h-2 w-2); the button itself
+                  // is grown to a 24x24 hit area (WCAG 2.5.8 target-size —
+                  // Lighthouse flagged the old 8x8 button) with the dot
+                  // centered inside.
+                  className="flex h-6 w-6 items-center justify-center"
+                >
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      "h-2 w-2 rounded-full transition",
+                      i === index ? "bg-flame" : "bg-white/20",
+                    )}
+                  />
+                </button>
               ))}
             </div>
 

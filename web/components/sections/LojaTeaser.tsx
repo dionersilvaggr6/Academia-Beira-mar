@@ -23,7 +23,7 @@ export function LojaTeaser() {
 
           <div className="flex flex-wrap gap-3">
             {SITE.store.map((item) => (
-              <Badge key={item} className="text-fg text-sm">
+              <Badge key={item} tone="strong" className="text-sm">
                 {item}
               </Badge>
             ))}
