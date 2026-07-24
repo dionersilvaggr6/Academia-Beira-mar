@@ -36,7 +36,7 @@ export function PersonalTrainer() {
             </p>
             <div className="flex flex-wrap gap-3">
               {PILARES.map((pilar) => (
-                <Badge key={pilar} className="text-fg text-sm">
+                <Badge key={pilar} tone="strong" className="text-sm">
                   {pilar}
                 </Badge>
               ))}

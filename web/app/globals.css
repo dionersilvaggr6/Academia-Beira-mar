@@ -9,7 +9,10 @@
   /* Texto */
   --color-fg: #f3f3f5;
   --color-fg-dim: #aeb3bd;
-  --color-fg-mute: #6b6b70;
+  /* Bumped from #6b6b70 (contrast ~3.3-3.7:1 on our dark surfaces, failing
+     WCAG AA 4.5:1 — Lighthouse color-contrast). Now >=5:1 against ink,
+     surface-2 and the blended glass-card background. */
+  --color-fg-mute: #8b8b92;
   /* Acento — laranja "molten" */
   --color-flame: #ff6a2b;
   --color-flame-hi: #ffa15e;

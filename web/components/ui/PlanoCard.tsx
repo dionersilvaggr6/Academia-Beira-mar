@@ -15,7 +15,10 @@ export function PlanoCard({ plano }: { plano: Plano }) {
       )}
     >
       {plano.destaque && (
-        <Badge className="mb-1 w-fit border-flame/40 bg-flame px-2 py-0.5 font-bold text-[9px] text-ink md:mb-2 md:px-3 md:py-1 md:text-[10px]">
+        <Badge
+          tone="flame"
+          className="mb-1 w-fit px-2 py-0.5 font-bold text-[9px] md:mb-2 md:px-3 md:py-1 md:text-[10px]"
+        >
           MELHOR OFERTA
         </Badge>
       )}
@@ -32,9 +35,16 @@ export function PlanoCard({ plano }: { plano: Plano }) {
        * app/checkout/page.tsx. O WhatsApp continua disponível como suporte
        * (FAB flutuante + "dúvidas? fale conosco" no fim do checkout).
        */}
+      {/*
+       * aria-label must CONTAIN the visible text ("Eu quero") — otherwise
+       * it's a WCAG 2.5.3 "label in name" failure (Lighthouse
+       * label-content-name-mismatch): screen-reader users who speak the
+       * visible label to activate the control land on a name that doesn't
+       * include what they said.
+       */}
       <ButtonLink
         href={`/checkout?plano=${plano.id}`}
-        aria-label={`Quero o plano ${plano.nome}`}
+        aria-label={`Eu quero o plano ${plano.nome}`}
         size="compact"
         className="mt-2 w-full md:mt-4 md:w-auto"
       >
