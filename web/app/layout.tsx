@@ -6,6 +6,7 @@ import { Header } from "@/components/layout/Header";
 import { WhatsappFab } from "@/components/layout/WhatsappFab";
 import { MotionProvider } from "@/components/MotionProvider";
 import { ParticleFieldLazy } from "@/components/three/ParticleFieldLazy";
+import { SITE_URL } from "@/lib/seo/site-url";
 import "./globals.css";
 
 const chakra = Chakra_Petch({
@@ -16,13 +17,32 @@ const chakra = Chakra_Petch({
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "Academia Beira Mar — Capão da Canoa | Aqui Evoluímos",
   description:
     "Musculação, Pilates e Funcional em Capão da Canoa. Aparelhos novos, climatizada, ambiente familiar. 5★ no Google. Veja os planos e matricule-se.",
+  keywords: [
+    "academia Capão da Canoa",
+    "academia Jardim Beira Mar",
+    "musculação Capão da Canoa",
+    "pilates Capão da Canoa",
+    "treino funcional Capão da Canoa",
+    "Academia Beira Mar",
+  ],
+  alternates: { canonical: "/" },
   openGraph: {
     title: "Academia Beira Mar — Aqui Evoluímos",
     description: "Musculação · Pilates · Funcional em Capão da Canoa.",
+    url: "/",
+    siteName: "Academia Beira Mar",
+    locale: "pt_BR",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Academia Beira Mar — Aqui Evoluímos",
+    description: "Musculação · Pilates · Funcional em Capão da Canoa.",
+    images: ["/opengraph-image"],
   },
   icons: { icon: "/brand/mark.svg" },
 };
