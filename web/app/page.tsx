@@ -11,10 +11,12 @@ import { Planos } from "@/components/sections/Planos";
 import { Sobre } from "@/components/sections/Sobre";
 import { Stats } from "@/components/sections/Stats";
 import { Wellhub } from "@/components/sections/Wellhub";
+import { LocalBusinessJsonLd } from "@/components/seo/LocalBusinessJsonLd";
 
 export default function Home() {
   return (
     <>
+      <LocalBusinessJsonLd />
       <Hero />
       <Stats />
       <Modalidades />
